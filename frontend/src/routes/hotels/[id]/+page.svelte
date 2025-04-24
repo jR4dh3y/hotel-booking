@@ -1,8 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
+  import { getHotels, getRooms } from '$lib/api';
 
-  const hotelId = parseInt($page.params.id);
+  const hotelId = parseInt(page.params.id);
 
   type Hotel = {
     hotel_id: number;
@@ -30,7 +31,7 @@
     try {
       // Get hotel details
       const hotels = await getHotels();
-      hotel = hotels.find(h => h.hotel_id === hotelId) || null;
+      hotel = hotels.find((h: { hotel_id: number; }) => h.hotel_id === hotelId) || null;
       
       if (!hotel) {
         error = 'Hotel not found';

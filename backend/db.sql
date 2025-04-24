@@ -157,3 +157,30 @@ INSERT INTO booking (user_id, room_id, check_in_date, check_out_date, payment_st
 INSERT INTO payment (booking_id, amount, payment_date, payment_status) VALUES
 (1, 300.00, '2025-04-30', 'paid'),
 (3, 180.00, '2025-05-14', 'paid');
+
+
+use hotelbooking;
+-- query to get all the users 
+SELECT * FROM hotelbooking.users;
+
+
+-- query to get all the bookings for a user
+SELECT b.booking_id, b.check_in_date, b.check_out_date, r.room_number, h.hotel_name, rt.room_type
+FROM booking b
+JOIN rooms r ON b.room_id = r.room_id
+JOIN hotels h ON r.hotel_id = h.hotel_id
+JOIN room_types rt ON r.room_type_id = rt.room_type_id
+WHERE b.user_id = 4; -- replace ? with the user ID
+
+
+SELECT b.*, r.room_number, h.hotel_name, rt.room_type 
+FROM booking b 
+JOIN rooms r ON b.room_id = r.room_id 
+JOIN hotels h ON r.hotel_id = h.hotel_id 
+JOIN room_types rt ON r.room_type_id = rt.room_type_id 
+WHERE b.user_id = 1;
+
+SELECT b.*, r.room_number, h.hotel_name, u.name as user_name 
+FROM booking b JOIN rooms r ON b.room_id = r.room_id 
+JOIN hotels h ON r.hotel_id = h.hotel_id 
+JOIN users u ON b.user_id = u.user_id;
