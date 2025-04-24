@@ -65,56 +65,95 @@ CREATE TABLE payment (
     FOREIGN KEY (booking_id) REFERENCES booking(booking_id)
 );
 
-insert into hotelbooking.hotels (hotel_name, location, rating) values
-('Hotel Sunshine', 'New York', 5),
-('Ocean View Resort', 'Miami', 4),
-('Mountain Retreat', 'Denver', 3),
-('City Center Inn', 'Los Angeles', 4),
-('Desert Oasis', 'Phoenix', 5);
 
-insert into hotelbooking.room_types (room_type) values
+-- Insert sample data into hotels table
+INSERT INTO hotels (hotel_name, location, rating) VALUES
+('Grand Palace', 'New York, NY', 5),
+('Ocean Breeze', 'Miami, FL', 4),
+('Mountain Retreat', 'Denver, CO', 3),
+('City Lights', 'Chicago, IL', 4);
+
+-- Insert sample data into room_types table
+INSERT INTO room_types (room_type) VALUES
 ('Single'),
 ('Double'),
 ('Suite'),
-('Deluxe'),
-('Family');
+('Deluxe');
 
-insert into hotelbooking.rooms (room_number, hotel_id, room_type_id, price, availability) values
-(101, 1, 1, 1500.00, 'available'),
-(102, 1, 2, 2000.00, 'available'),
-(201, 2, 3, 2500.00, 'booked'),
-(202, 2, 4, 3000.00, 'available'),
-(301, 3, 5, 3500.00, 'available');
+-- Insert sample data into rooms table
+INSERT INTO rooms (room_number, hotel_id, room_type_id, price, availability) VALUES
+-- Grand Palace (8 rooms)
+(101, 1, 1, 100.00, 'available'),
+(102, 1, 1, 100.00, 'available'),
+(201, 1, 2, 150.00, 'booked'),
+(202, 1, 2, 150.00, 'available'),
+(301, 1, 3, 250.00, 'available'),
+(302, 1, 3, 250.00, 'booked'),
+(401, 1, 4, 350.00, 'available'),
+(402, 1, 4, 350.00, 'available'),
+-- Ocean Breeze (8 rooms)
+(101, 2, 1, 90.00, 'available'),
+(102, 2, 1, 90.00, 'booked'),
+(201, 2, 2, 140.00, 'available'),
+(202, 2, 2, 140.00, 'available'),
+(301, 2, 3, 220.00, 'available'),
+(302, 2, 3, 220.00, 'available'),
+(401, 2, 4, 320.00, 'booked'),
+(402, 2, 4, 320.00, 'available'),
+-- Mountain Retreat (7 rooms)
+(101, 3, 1, 80.00, 'available'),
+(102, 3, 1, 80.00, 'available'),
+(201, 3, 2, 120.00, 'booked'),
+(202, 3, 2, 120.00, 'available'),
+(301, 3, 3, 200.00, 'available'),
+(302, 3, 3, 200.00, 'available'),
+(401, 3, 4, 280.00, 'available'),
+-- City Lights (7 rooms)
+(101, 4, 1, 95.00, 'available'),
+(102, 4, 1, 95.00, 'booked'),
+(201, 4, 2, 145.00, 'available'),
+(202, 4, 2, 145.00, 'available'),
+(301, 4, 3, 230.00, 'available'),
+(302, 4, 3, 230.00, 'booked'),
+(401, 4, 4, 330.00, 'available');
 
-insert into hotelbooking.amenities (amenity_name) values
-('Free Wi-Fi'),
-('Swimming Pool'),
-('Gym'),
-('Spa'),
-('Restaurant');
+-- Insert sample data into amenities table
+INSERT INTO amenities (amenity_name) VALUES
+('WiFi'),
+('Mini Bar'),
+('Room Service'),
+('Gym Access'),
+('Spa');
 
-insert into hotelbooking.room_type_amenities (room_type_id, amenity_id) values
-(1, 1),
-(1, 2),
-(2, 3),
-(2, 4),
-(3, 5),
-(4, 1),
-(4, 2),
-(5, 3);
+-- Insert sample data into room_type_amenities table
+INSERT INTO room_type_amenities (room_type_id, amenity_id) VALUES
+(1, 1), -- Single: WiFi
+(2, 1), -- Double: WiFi
+(2, 2), -- Double: Mini Bar
+(3, 1), -- Suite: WiFi
+(3, 2), -- Suite: Mini Bar
+(3, 3), -- Suite: Room Service
+(4, 1), -- Deluxe: WiFi
+(4, 2), -- Deluxe: Mini Bar
+(4, 3), -- Deluxe: Room Service
+(4, 4), -- Deluxe: Gym Access
+(4, 5); -- Deluxe: Spa
 
-insert into hotelbooking.users (name, email, role, password) values
-('admin', 'admin@eg.com', 'admin', 'admin123'),
-('user', 'user@example.com', 'user', 'user123');
+-- Insert sample data into users table
+INSERT INTO users (name, email, role, password) VALUES
+('John Doe', 'john@example.com', 'user', 'password123'),
+('Jane Smith', 'jane@example.com', 'user', 'password456'),
+('Admin User', 'admin@example.com', 'admin', 'adminpass'),
+('Alice Brown', 'alice@example.com', 'user', 'password789');
 
-insert into hotelbooking.booking (user_id, room_id, check_in_date, check_out_date, payment_status) values
-(1, 1, '2023-10-01', '2023-10-05', 'paid'),
-(2, 2, '2023-10-02', '2023-10-06', 'unpaid'),
-(1, 3, '2023-10-03', '2023-10-07', 'paid');
+-- Insert sample data into booking table
+INSERT INTO booking (user_id, room_id, check_in_date, check_out_date, payment_status) VALUES
+(1, 3, '2025-05-01', '2025-05-03', 'paid'),
+(2, 6, '2025-05-10', '2025-05-12', 'unpaid'),
+(1, 10, '2025-05-15', '2025-05-17', 'paid'),
+(4, 15, '2025-05-20', '2025-05-22', 'unpaid');
 
-insert into hotelbooking.payment (booking_id, amount, payment_date, payment_status) values
-(1, 1500.00, '2023-10-01', 'paid'),
-(2, 2000.00, '2023-10-02', 'unpaid'),
-(3, 2500.00, '2023-10-03', 'paid');
-
-
+-- Insert sample data into payment table
+INSERT INTO payment (booking_id, amount, payment_date, payment_status) VALUES
+(1, 300.00, '2025-04-30', 'paid'),
+(3, 180.00, '2025-05-14', 'paid');
