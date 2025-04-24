@@ -6,14 +6,6 @@
 - Backend: Node.js, Express.js
 - Database: MySQL
 
-## Screenshots
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-    <img src="ss/mp.png" alt="Main Page" width="100%">
-    <img src="ss/hotelrooms.png" alt="Hotel Rooms" width="100%">
-    <img src="ss/rooms.png" alt="Rooms" width="100%">
-    <img src="ss/login.png" alt="Login Page" width="100%">
-</div>
-
 ## Getting Started
 
 1. Clone the repository:
@@ -52,3 +44,10 @@
     2. You can change the port in the `backend/server.js` file if needed.
     3. Make sure to have MySQL server running and the database created before starting the backend server.
 
+## Screenshots
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+    <img src="ss/mp.png" alt="Main Page" width="100%">
+    <img src="ss/hotelrooms.png" alt="Hotel Rooms" width="100%">
+    <img src="ss/rooms.png" alt="Rooms" width="100%">
+    <img src="ss/login.png" alt="Login Page" width="100%">
+</div>
