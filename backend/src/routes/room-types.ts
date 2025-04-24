@@ -4,7 +4,6 @@ import { RowDataPacket } from 'mysql2';
 
 const router = Router();
 
-// Define interfaces for type safety
 interface RoomTypeRow extends RowDataPacket {
   room_type_id: number;
   room_type: string;
@@ -44,7 +43,7 @@ router.get('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Room type not found' });
     }
     
-    // Format the response to group amenities
+    // Format the response 
     const roomType: RoomTypeWithAmenities = {
       room_type_id: results[0].room_type_id,
       room_type: results[0].room_type,

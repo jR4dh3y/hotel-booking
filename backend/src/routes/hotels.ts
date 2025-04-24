@@ -32,23 +32,23 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a specific hotel by ID
-// router.get('/:id', async (req, res) => {
-//   try {
-//     const hotelId = req.params.id;
-//     const [rows] = await db.query<HotelRow[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
+// a specific hotel by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const hotelId = req.params.id;
+    const [rows] = await db.query<HotelRow[]>('SELECT * FROM hotels WHERE hotel_id = ?', [hotelId]);
     
-//     if (rows.length === 0) {
-//       return res.status(404).json({ error: 'Hotel not found' });
-//     }
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Hotel not found' });
+    }
     
-//     res.json(rows[0]);
-//   } catch (err: any) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
+    res.json(rows[0]);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-// Get rooms for a specific hotel
+// rooms for a specific hotel
 router.get('/:id/rooms', async (req, res) => {
   try {
     const hotelId = req.params.id;
