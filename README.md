@@ -27,7 +27,7 @@
     - Create a MySQL database and import the `db.sql` file located in the `backend/mysql-query` directory.
     - Update the database connection details in the `db.js` file in the `backend` directory.
 
-5. Start the backend server:
+5. Start the application:
     ```bash
     cd backend
     npm start
