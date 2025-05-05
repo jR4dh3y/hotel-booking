@@ -19,6 +19,12 @@ export async function getRoomTypes() {
     return await res.json();
 }
 
+export async function getRoomAmenities(roomTypeId: number) {
+    const res = await fetch(`http://localhost:3000/api/room-types/${roomTypeId}`);
+    if (!res.ok) throw new Error('failed to get room amenities');
+    return await res.json();
+}
+
 export async function getBookings(userId?: number) {
     const url = userId 
         ? `http://localhost:3000/api/users/${userId}/bookings` 

@@ -82,6 +82,8 @@ router.post('/', async (req: Request, res: Response) => {
 			'INSERT INTO booking (user_id, room_id, check_in_date, check_out_date, payment_status) VALUES (?, ?, ?, ?, ?)',
 			[user_id, room_id, check_in_date, check_out_date, 'unpaid']
 		);
+		// Delete booking
+		
 
 		// Update room availability
 		await db.query(
