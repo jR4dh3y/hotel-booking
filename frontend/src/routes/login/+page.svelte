@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { login } from '$lib/api';
+  import { login, register } from '$lib/api';
+  import { auth } from '$lib/stores/auth';
   
   let email = '';
   let password = '';
@@ -19,8 +20,9 @@
       if (isLogin) {
         const response = await login(email, password);
         success = 'Login successful!';
-        // Store user info in localStorage or a store
+        // Store user info in localStorage and auth store
         localStorage.setItem('user', JSON.stringify(response.user));
+        auth.login(response.user);
         // Redirect to profile page
         goto('/profile');
       } else {

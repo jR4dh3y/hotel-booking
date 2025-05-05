@@ -1,5 +1,6 @@
 <script>
   import { page } from '$app/state';
+  import { auth } from '$lib/stores/auth';
 </script>
 
 <div class="app">
@@ -18,9 +19,15 @@
         <li class={page.url.pathname === '/bookings' ? 'active' : ''}>
           <a href="/bookings">My Bookings</a>
         </li>
-        <li class={page.url.pathname === '/login' ? 'active' : ''}>
-          <a href="/login">Login</a>
-        </li>
+        {#if $auth.isAuthenticated}
+          <li class={page.url.pathname === '/profile' ? 'active' : ''}>
+            <a href="/profile">Profile</a>
+          </li>
+        {:else}
+          <li class={page.url.pathname === '/login' ? 'active' : ''}>
+            <a href="/login">Login</a>
+          </li>
+        {/if}
       </ul>
     </nav>
   </header>
