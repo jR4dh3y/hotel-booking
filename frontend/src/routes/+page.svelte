@@ -1,90 +1,154 @@
-<script lang="ts">
-  import { onMount } from 'svelte';
-  import { getHotels } from '$lib/api';
-  
-
-  type Hotel = {
-    hotel_id: number;
-    hotel_name: string;
-    location: string;
-    rating: number;
-  };
-
-  let hotels: Hotel[] = [];
-  let loading = true;
-  let error = '';
-
-  onMount(async () => {
-    try {
-      hotels = await getHotels();
-    } catch (err) {
-      error = 'Failed to load hotels. Please try again later.';
-      console.error(err);
-    } finally {
-      loading = false;
-    }
-  });
-
-  function getRatingStars(rating: number) {
-    return '★'.repeat(rating) + '☆'.repeat(5 - rating);
-  }
-</script>
-
-<div class="hotels-container">
-  <h1>Welcome to Hotel Booking System</h1>
-  <p class="subtitle">Find and book the perfect hotel for your stay</p>
-
-  {#if loading}
-    <div class="loading">
-      <p>Loading hotels...</p>
+<div class="home-container">
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Find Your Perfect Stay</h1>
+      <p>Discover and book the best hotels for your next adventure</p>
+      <div class="hero-buttons">
+        <a href="/hotels" class="primary-button">Browse Hotels</a>
+        <a href="/rooms" class="secondary-button">View All Rooms</a>
+      </div>
     </div>
-  {:else if error}
-    <div class="error">
-      <p>{error}</p>
+  </section>
+
+  <section class="features">
+    <h2>Why Choose Us</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏨</div>
+        <h3>Wide Selection</h3>
+        <p>Choose from a variety of hotels and room types to suit your needs</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Best Prices</h3>
+        <p>Get the best deals and competitive rates for your stay</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⭐</div>
+        <h3>Quality Service</h3>
+        <p>Experience top-notch service and comfortable accommodations</p>
+      </div>
     </div>
-  {:else if hotels.length === 0}
-    <div class="no-hotels">
-      <p>No hotels available at the moment.</p>
-    </div>
-  {:else}
-    <div class="hotel-grid">
-      {#each hotels as hotel}
-        <div class="hotel-card">
-          <div class="hotel-header">
-            <h2>{hotel.hotel_name}</h2>
-            <div class="rating">{getRatingStars(hotel.rating)}</div>
-          </div>
-          <div class="hotel-body">
-            <p class="location"><span class="icon">📍</span> {hotel.location}</p>
-            <p class="rating-text">{hotel.rating} Star Hotel</p>
-          </div>
-          <div class="hotel-footer">
-            <a href="/hotels/{hotel.hotel_id}" class="view-rooms-btn">View Rooms</a>
-          </div>
-        </div>
-      {/each}
-    </div>
-  {/if}
+  </section>
 </div>
 
 <style>
-  .hotels-container {
+  .home-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 0 1rem;
   }
 
-  h1 {
-    font-size: 2rem;
-    color: #1C6EA4;
+  .hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    margin-bottom: 0.5rem;
+    color: white;
+    margin: -2rem -1rem 2rem;
+    position: relative;
   }
 
-  .subtitle {
-    text-align: center;
-    color: #666;
+  .hero-content {
+    max-width: 800px;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero p {
+    font-size: 1.4rem;
     margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .primary-button, .secondary-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .primary-button {
+    background-color: #1C6EA4;
+    color: white;
+  }
+
+  .primary-button:hover {
+    background-color: #155888;
+    transform: translateY(-2px);
+  }
+
+  .secondary-button {
+    background-color: white;
+    color: #1C6EA4;
+    border: 2px solid #1C6EA4;
+  }
+
+  .secondary-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+  }
+
+  .features {
+    margin: 4rem 0;
+  }
+
+  .features h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .feature-card {
+    text-align: center;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card h3 {
+    color: #1C6EA4;
+    margin-bottom: 1rem;
+  }
+
+  .feature-card p {
+    color: #666;
+    line-height: 1.5;
   }
 
   .loading, .error, .no-hotels {
@@ -99,81 +163,19 @@
     background-color: #f9f2f2;
   }
 
-  .hotel-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-
-  .hotel-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-
-  .hotel-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  .hotel-header {
-    padding: 1rem;
-    background-color: #1C6EA4;
-    color: white;
-  }
-
-  .hotel-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-
-  .rating {
-    color: #FFD700;
-    font-size: 1.2rem;
-    margin-top: 0.5rem;
-  }
-
-  .hotel-body {
-    padding: 1rem;
-  }
-
-  .location {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-  }
-
-  .icon {
-    margin-right: 0.5rem;
-  }
-
-  .rating-text {
-    color: #666;
-  }
-
-  .hotel-footer {
-    padding: 1rem;
-    background-color: #f9f9f9;
-    text-align: center;
-  }
-
-  .view-rooms-btn {
-    display: inline-block;
-    background-color: #1C6EA4;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-
-  .view-rooms-btn:hover {
-    background-color: #0d5a8f;
-  }
-
   @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+    }
+
+    .hero-buttons {
+      flex-direction: column;
+    }
+
     .hotel-grid {
       grid-template-columns: 1fr;
     }

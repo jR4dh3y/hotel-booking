@@ -11,13 +11,13 @@
       </div>
       <ul class="nav-links">
         <li class={page.url.pathname === '/' ? 'active' : ''}>
-          <a href="/">Hotels</a>
+          <a href="/">Home</a>
+        </li>
+        <li class={page.url.pathname === '/hotels' ? 'active' : ''}>
+          <a href="/hotels">Hotels</a>
         </li>
         <li class={page.url.pathname === '/rooms' ? 'active' : ''}>
           <a href="/rooms">Rooms</a>
-        </li>
-        <li class={page.url.pathname === '/bookings' ? 'active' : ''}>
-          <a href="/bookings">My Bookings</a>
         </li>
         {#if $auth.isAuthenticated}
           <li class={page.url.pathname === '/profile' ? 'active' : ''}>

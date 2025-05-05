@@ -19,6 +19,8 @@
   let loading = true;
   let error = '';
   let userId: number | null = null;
+  let userEmail: string = '';
+  let userName: string = '';
 
   onMount(async () => {
     // Check if user is authenticated
@@ -28,6 +30,8 @@
         return;
       }
       userId = state.user?.user_id || null;
+      userName = state.user?.name || '';
+      userEmail = state.user?.email || '';
     });
 
     if (userId) {
@@ -54,55 +58,91 @@
     auth.logout();
     goto('/login');
   }
+
+  function calculateNights(checkIn: string, checkOut: string) {
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
 </script>
 
 <div class="profile-container">
   <div class="profile-header">
-    <h1>My Profile</h1>
-    <button on:click={handleLogout} class="logout-button">Logout</button>
+    <div class="user-info">
+      <h1>Welcome, {userName}!</h1>
+      <p class="email">{userEmail}</p>
+    </div>
+    <div class="header-actions">
+      <button on:click={handleLogout} class="logout-button">Logout</button>
+    </div>
   </div>
-  <p class="subtitle">Welcome back! Here are your bookings</p>
 
-  {#if error}
-    <div class="error">
-      <p>{error}</p>
+  <div class="stats-section">
+    <div class="stat-card">
+      <h3>Total Bookings</h3>
+      <p class="stat-value">{bookings.length}</p>
     </div>
-  {/if}
+    <div class="stat-card">
+      <h3>Upcoming Stays</h3>
+      <p class="stat-value">
+        {bookings.filter(b => new Date(b.check_in_date) > new Date()).length}
+      </p>
+    </div>
+    <div class="stat-card">
+      <h3>Completed Stays</h3>
+      <p class="stat-value">
+        {bookings.filter(b => new Date(b.check_out_date) < new Date()).length}
+      </p>
+    </div>
+  </div>
 
-  {#if loading}
-    <div class="loading">
-      <p>Loading your bookings...</p>
-    </div>
-  {:else if bookings.length === 0}
-    <div class="no-bookings">
-      <p>You don't have any bookings yet.</p>
-      <a href="/rooms" class="book-now-button">Book a Room Now</a>
-    </div>
-  {:else}
-    <div class="bookings-list">
-      {#each bookings as booking}
-        <div class="booking-card">
-          <div class="booking-header">
-            <h3>{booking.hotel_name}</h3>
-            <span class="status {booking.payment_status}">
-              {booking.payment_status === 'paid' ? 'Paid' : 'Unpaid'}
-            </span>
+  <div class="bookings-section">
+    <h2>Your Bookings</h2>
+    {#if error}
+      <div class="error">
+        <p>{error}</p>
+      </div>
+    {/if}
+
+    {#if loading}
+      <div class="loading">
+        <p>Loading your bookings...</p>
+      </div>
+    {:else if bookings.length === 0}
+      <div class="no-bookings">
+        <p>You don't have any bookings yet.</p>
+        <a href="/rooms" class="book-now-button">Book a Room Now</a>
+      </div>
+    {:else}
+      <div class="bookings-list">
+        {#each bookings as booking}
+          <div class="booking-card">
+            <div class="booking-header">
+              <h3>{booking.hotel_name}</h3>
+              <span class="status {booking.payment_status}">
+                {booking.payment_status === 'paid' ? 'Paid' : 'Unpaid'}
+              </span>
+            </div>
+            <div class="booking-details">
+              <p><strong>Room:</strong> {booking.room_number} ({booking.room_type})</p>
+              <p><strong>Check-in:</strong> {formatDate(booking.check_in_date)}</p>
+              <p><strong>Check-out:</strong> {formatDate(booking.check_out_date)}</p>
+              <p><strong>Duration:</strong> {calculateNights(booking.check_in_date, booking.check_out_date)} nights</p>
+              <p><strong>Booking ID:</strong> #{booking.booking_id}</p>
+            </div>
+            <div class="booking-actions">
+              {#if booking.payment_status === 'unpaid'}
+                <a href="/payment/{booking.booking_id}" class="pay-button">Pay Now</a>
+              {:else}
+                <button class="cancel-button">Cancel Booking</button>
+              {/if}
+            </div>
           </div>
-          <div class="booking-details">
-            <p><strong>Room:</strong> {booking.room_number} ({booking.room_type})</p>
-            <p><strong>Check-in:</strong> {formatDate(booking.check_in_date)}</p>
-            <p><strong>Check-out:</strong> {formatDate(booking.check_out_date)}</p>
-            <p><strong>Booking ID:</strong> #{booking.booking_id}</p>
-          </div>
-          {#if booking.payment_status === 'unpaid'}
-            <a href="/payment/{booking.booking_id}" class="pay-button">Pay Now</a>
-          {:else}
-            <button class="cancel-button">Cancel Booking</button>
-          {/if}
-        </div>
-      {/each}
-    </div>
-  {/if}
+        {/each}
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -116,7 +156,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+
+  .user-info h1 {
+    color: #1C6EA4;
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  .email {
+    color: #666;
+    margin: 0.5rem 0 0;
   }
 
   .logout-button {
@@ -133,14 +186,41 @@
     background-color: #c82333;
   }
 
-  h1 {
+  .stats-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .stat-card h3 {
+    color: #666;
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  .stat-value {
     color: #1C6EA4;
+    font-size: 2rem;
+    font-weight: bold;
     margin: 0;
   }
 
-  .subtitle {
-    color: #666;
-    margin-bottom: 2rem;
+  .bookings-section {
+    margin-top: 2rem;
+  }
+
+  .bookings-section h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
   }
 
   .bookings-list {
@@ -154,6 +234,11 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-5px);
   }
 
   .booking-header {
@@ -187,22 +272,25 @@
   }
 
   .booking-details {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .booking-details p {
     margin: 0.5rem 0;
   }
 
-  .pay-button, .cancel-button {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
+  .booking-actions {
+    padding: 1rem;
+    background-color: #f9f9f9;
     text-align: center;
+  }
+
+  .pay-button, .cancel-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
     text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
     transition: background-color 0.3s ease;
   }
 
@@ -218,6 +306,8 @@
   .cancel-button {
     background-color: #dc3545;
     color: white;
+    border: none;
+    cursor: pointer;
   }
 
   .cancel-button:hover {
@@ -243,7 +333,7 @@
   .book-now-button {
     display: inline-block;
     margin-top: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     background-color: #1C6EA4;
     color: white;
     text-decoration: none;
