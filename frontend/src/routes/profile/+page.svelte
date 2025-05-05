@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { getBookings } from '$lib/api';
+  import { getBookings, cancelBooking } from '$lib/api';
   import { auth } from '$lib/stores/auth';
 
   type Booking = {
@@ -21,6 +21,8 @@
   let userId: number | null = null;
   let userEmail: string = '';
   let userName: string = '';
+  let cancelingBookingId: number | null = null;
+  let cancelError = '';
 
   onMount(async () => {
     // Check if user is authenticated
@@ -64,6 +66,37 @@
     const end = new Date(checkOut);
     const diffTime = Math.abs(end.getTime() - start.getTime());
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  async function handleCancelBooking(bookingId: number) {
+    if (!confirm('Are you sure you want to cancel this booking?')) {
+      console.log('Cancellation cancelled by user');
+      return;
+    }
+    
+    try {
+      console.log('Starting booking cancellation for ID:', bookingId);
+      cancelingBookingId = bookingId;
+      cancelError = '';
+      
+      const result = await cancelBooking(bookingId);
+      console.log('Cancellation API response:', result);
+      
+      // Refresh bookings after cancellation
+      if (userId) {
+        console.log('Refreshing bookings list for user:', userId);
+        const updatedBookings = await getBookings(userId);
+        console.log('Updated bookings:', updatedBookings);
+        bookings = updatedBookings;
+      } else {
+        console.warn('No userId available to refresh bookings');
+      }
+    } catch (err) {
+      console.error('Error in handleCancelBooking:', err);
+      cancelError = 'Failed to cancel booking. Please try again.';
+    } finally {
+      cancelingBookingId = null;
+    }
   }
 </script>
 
@@ -135,11 +168,23 @@
               {#if booking.payment_status === 'unpaid'}
                 <a href="/payment/{booking.booking_id}" class="pay-button">Pay Now</a>
               {:else}
-                <button class="cancel-button">Cancel Booking</button>
+                <button 
+                  class="cancel-button" 
+                  on:click={() => handleCancelBooking(booking.booking_id)}
+                  disabled={cancelingBookingId === booking.booking_id}
+                >
+                  {cancelingBookingId === booking.booking_id ? 'Canceling...' : 'Cancel Booking'}
+                </button>
               {/if}
             </div>
           </div>
         {/each}
+      </div>
+    {/if}
+
+    {#if cancelError}
+      <div class="error">
+        <p>{cancelError}</p>
       </div>
     {/if}
   </div>

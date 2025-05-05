@@ -77,3 +77,19 @@ export async function register(name: string, email: string, password: string) {
     if (!res.ok) throw new Error('failed to register');
     return await res.json();
 }
+
+export async function cancelBooking(bookingId: number) {
+    console.log('Sending cancel request for booking:', bookingId);
+    const res = await fetch(`http://localhost:3000/api/bookings/${bookingId}`, {
+        method: 'DELETE'
+    });
+    console.log('Cancel booking response status:', res.status);
+    if (!res.ok) {
+        const errorData = await res.json();
+        console.error('Cancel booking error:', errorData);
+        throw new Error('failed to cancel booking');
+    }
+    const data = await res.json();
+    console.log('Cancel booking success:', data);
+    return data;
+}

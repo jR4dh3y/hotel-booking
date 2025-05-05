@@ -1,3 +1,4 @@
+-- Active: 1746427885192@@127.0.0.1@3306
 CREATE DATABASE IF NOT EXISTS hotelbooking;
 USE hotelbooking;
 
@@ -184,3 +185,146 @@ SELECT b.*, r.room_number, h.hotel_name, u.name as user_name
 FROM booking b JOIN rooms r ON b.room_id = r.room_id 
 JOIN hotels h ON r.hotel_id = h.hotel_id 
 JOIN users u ON b.user_id = u.user_id;
+
+-- Create stored procedures for booking operations
+DELIMITER //
+
+-- Procedure to create a new booking
+CREATE PROCEDURE CreateBooking(
+    IN p_user_id INT,
+    IN p_room_id INT,
+    IN p_check_in_date DATE,
+    IN p_check_out_date DATE
+)
+BEGIN
+    DECLARE room_available VARCHAR(10);
+    
+    -- Check if room exists and is available
+    SELECT availability INTO room_available
+    FROM rooms
+    WHERE room_id = p_room_id;
+    
+    IF room_available IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Room not found';
+    ELSEIF room_available = 'booked' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Room is already booked';
+    END IF;
+    
+    -- Start transaction
+    START TRANSACTION;
+    
+    -- Create booking
+    INSERT INTO booking (user_id, room_id, check_in_date, check_out_date, payment_status)
+    VALUES (p_user_id, p_room_id, p_check_in_date, p_check_out_date, 'unpaid');
+    
+    -- Update room availability
+    UPDATE rooms
+    SET availability = 'booked'
+    WHERE room_id = p_room_id;
+    
+    COMMIT;
+    
+    -- Return the new booking ID
+    SELECT LAST_INSERT_ID() as booking_id;
+END //
+
+-- Procedure to cancel a booking
+CREATE PROCEDURE CancelBooking(
+    IN p_booking_id INT
+)
+BEGIN
+    DECLARE v_room_id INT;
+    DECLARE v_payment_status VARCHAR(10);
+    
+    -- Get the booking details
+    SELECT room_id, payment_status INTO v_room_id, v_payment_status
+    FROM booking
+    WHERE booking_id = p_booking_id;
+    
+    IF v_room_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Booking not found';
+    END IF;
+    
+    -- Start transaction
+    START TRANSACTION;
+    
+    -- If there are any payments, delete them first
+    DELETE FROM payment WHERE booking_id = p_booking_id;
+    
+    -- Delete the booking
+    DELETE FROM booking WHERE booking_id = p_booking_id;
+    
+    -- Update room availability
+    UPDATE rooms
+    SET availability = 'available'
+    WHERE room_id = v_room_id;
+    
+    COMMIT;
+    
+    SELECT 'Booking cancelled successfully' as message;
+END //
+
+-- Procedure to sync payment status
+CREATE PROCEDURE SyncPaymentStatus(
+    IN p_booking_id INT
+)
+BEGIN
+    DECLARE v_payment_count INT;
+    DECLARE v_payment_status VARCHAR(10);
+    
+    -- Count payments for this booking
+    SELECT COUNT(*) INTO v_payment_count
+    FROM payment
+    WHERE booking_id = p_booking_id;
+    
+    -- Determine payment status
+    IF v_payment_count > 0 THEN
+        SET v_payment_status = 'paid';
+    ELSE
+        SET v_payment_status = 'unpaid';
+    END IF;
+    
+    -- Update booking status
+    UPDATE booking
+    SET payment_status = v_payment_status
+    WHERE booking_id = p_booking_id;
+    
+    SELECT v_payment_status as new_status;
+END //
+
+-- Procedure to handle payment creation/update
+CREATE PROCEDURE ProcessPayment(
+    IN p_booking_id INT,
+    IN p_amount DECIMAL(10,2),
+    IN p_payment_date DATE
+)
+BEGIN
+    DECLARE v_booking_exists INT;
+    
+    -- Check if booking exists
+    SELECT COUNT(*) INTO v_booking_exists
+    FROM booking
+    WHERE booking_id = p_booking_id;
+    
+    IF v_booking_exists = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Booking not found';
+    END IF;
+    
+    -- Start transaction
+    START TRANSACTION;
+    
+    -- Insert payment
+    INSERT INTO payment (booking_id, amount, payment_date, payment_status)
+    VALUES (p_booking_id, p_amount, p_payment_date, 'paid');
+    
+    -- Sync payment status
+    CALL SyncPaymentStatus(p_booking_id);
+    
+    COMMIT;
+END //
+
+DELIMITER ;
