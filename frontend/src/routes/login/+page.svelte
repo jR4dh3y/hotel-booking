@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { login, register } from '$lib/api';
+  import { goto } from '$app/navigation';
+  import { login } from '$lib/api';
   
   let email = '';
   let password = '';
@@ -18,11 +19,10 @@
       if (isLogin) {
         const response = await login(email, password);
         success = 'Login successful!';
-        // In a real app, you would store the user in a store
-        // and redirect to another page
-        setTimeout(() => {
-          window.location.href = '/bookings';
-        }, 1500);
+        // Store user info in localStorage or a store
+        localStorage.setItem('user', JSON.stringify(response.user));
+        // Redirect to profile page
+        goto('/profile');
       } else {
         if (!name) {
           error = 'Name is required for registration';

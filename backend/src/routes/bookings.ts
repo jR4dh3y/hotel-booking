@@ -41,7 +41,7 @@ router.get('/user/:id', async (req: Request, res: Response) => {
 	try {
 		const userId = req.params.id;
 		const [rows] = await db.query<BookingRow[]>(
-			'SELECT b.booking_id, b.check_in_date, b.check_out_date, r.room_number, h.hotel_name, rt.room_type FROM booking b JOIN rooms r ON b.room_id = r.room_id JOIN hotels h ON r.hotel_id = h.hotel_id JOIN room_types rt ON r.room_type_id = rt.room_type_id WHERE b.user_id = 1',
+			'SELECT b.booking_id, b.check_in_date, b.check_out_date, r.room_number, h.hotel_name, rt.room_type, b.payment_status FROM booking b JOIN rooms r ON b.room_id = r.room_id JOIN hotels h ON r.hotel_id = h.hotel_id JOIN room_types rt ON r.room_type_id = rt.room_type_id WHERE b.user_id = ?',
 			[userId]
 		);
 		res.json(rows);

@@ -27,7 +27,7 @@ export async function getRoomAmenities(roomTypeId: number) {
 
 export async function getBookings(userId?: number) {
     const url = userId 
-        ? `http://localhost:3000/api/users/${userId}/bookings` 
+        ? `http://localhost:3000/api/bookings/user/${userId}` 
         : 'http://localhost:3000/api/bookings';
     const res = await fetch(url);
     if (!res.ok) throw new Error('failed to get bookings');

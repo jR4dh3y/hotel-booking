@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
   import { page } from '$app/state';
   import { createBooking, getRooms } from '$lib/api';
+  import { auth } from '$lib/stores/auth';
+  import { goto } from '$app/navigation';
   
   type Room = {
     room_id: number;
@@ -21,9 +23,22 @@
   let checkInDate = '';
   let checkOutDate = '';
   let bookingSuccess = false;
-  let userId = 1; // In a real app, this would come from an auth store
+  let userId: number | null = null;
+  let userName: string = '';
 
   onMount(async () => {
+    // Check if user is authenticated
+    auth.subscribe((state) => {
+      if (!state.isAuthenticated) {
+        goto('/login');
+        return;
+      }
+      userId = state.user?.user_id || null;
+      userName = state.user?.name || '';
+    });
+
+    if (!userId) return;
+
     try {
       // Get the specific room details
       const rooms = await getRooms();
@@ -62,7 +77,7 @@
   }
 
   async function handleBooking() {
-    if (!room) return;
+    if (!room || !userId) return;
     
     // Validate dates
     const inDate = new Date(checkInDate);
@@ -120,7 +135,7 @@
       <h2>Booking Successful!</h2>
       <p>Your room has been booked successfully.</p>
       <div class="success-actions">
-        <a href="/bookings" class="view-bookings-button">View My Bookings</a>
+        <a href="/profile" class="view-bookings-button">View My Bookings</a>
         <a href="/rooms" class="back-button">Browse More Rooms</a>
       </div>
     </div>
@@ -130,6 +145,10 @@
       <h2>{room.hotel_name}</h2>
       <p class="room-type">{room.room_type} Room</p>
       <p class="room-price">{formatPrice(room.price)} per night</p>
+    </div>
+    
+    <div class="user-info">
+      <h3>Booking for: {userName}</h3>
     </div>
     
     <form on:submit|preventDefault={handleBooking} class="booking-form">
@@ -210,6 +229,18 @@
   .room-price {
     font-size: 1.25rem;
     font-weight: bold;
+    color: #1C6EA4;
+  }
+
+  .user-info {
+    background-color: #e8f4f8;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+
+  .user-info h3 {
+    margin: 0;
     color: #1C6EA4;
   }
 
