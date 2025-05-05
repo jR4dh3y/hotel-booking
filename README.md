@@ -18,9 +18,6 @@
     ```
 3. Install the dependencies for both the frontend and backend:
    ```bash
-   cd frontend
-   npm install
-   cd ../backend
    npm install
    ```
 4. Set up the database:
@@ -28,16 +25,10 @@
     - Update the database connection details in the `db.js` file in the `backend` directory.
 
 5. Start the application:
-    ```bash
-    cd backend
-    npm start
-    ```
-6. Start the frontend development server:
-    ```bash
-    cd frontend
-    npm run dev
-    ```
-7. Open your browser and navigate to `http://localhost:5173` to view the application.
+   ```bash
+   npm start
+   ```
+    - This will start both the frontend and backend servers.
 
 - Note: 
     1. The backend server will be running on `http://localhost:3000` by default.
