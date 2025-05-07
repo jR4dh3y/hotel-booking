@@ -13,7 +13,7 @@ interface UserRow extends RowDataPacket {
 	password: string;
 }
 
-// // Login route
+// Login route
 router.post('/login', async (req, res) => {
 	try {
 		const { email, password } = req.body;
@@ -37,9 +37,41 @@ router.post('/login', async (req, res) => {
 		// @ts-ignore
 		delete user.password;
 
-
 		res.json({
 			message: 'Login successful',
+			user
+		});
+	} catch (err: any) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
+// Admin login route
+router.post('/admin/login', async (req, res) => {
+	try {
+		const { email, password } = req.body;
+
+		if (!email || !password) {
+			res.status(400).json({ error: 'Email and password are required' });
+			return;
+		}
+
+		const [results] = await db.query<UserRow[]>(
+			'SELECT * FROM users WHERE email = ? AND password = ? AND role = ?',
+			[email, password, 'admin']
+		);
+
+		if (results.length === 0) {
+			res.status(401).json({ error: 'Invalid admin credentials' });
+			return;
+		}
+
+		const user = { ...results[0] };
+		// @ts-ignore
+		delete user.password;
+
+		res.json({
+			message: 'Admin login successful',
 			user
 		});
 	} catch (err: any) {

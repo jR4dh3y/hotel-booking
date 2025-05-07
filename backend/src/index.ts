@@ -18,6 +18,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/payments', paymentRoutes);
 
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
