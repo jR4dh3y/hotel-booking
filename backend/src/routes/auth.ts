@@ -47,37 +47,37 @@ router.post('/login', async (req, res) => {
 });
 
 // Admin login route
-router.post('/admin/login', async (req, res) => {
-	try {
-		const { email, password } = req.body;
+// router.post('/login', async (req, res) => {
+// 	try {
+// 		const { email, password } = req.body;
 
-		if (!email || !password) {
-			res.status(400).json({ error: 'Email and password are required' });
-			return;
-		}
+// 		if (!email || !password) {
+// 			res.status(400).json({ error: 'Email and password are required' });
+// 			return;
+// 		}
 
-		const [results] = await db.query<UserRow[]>(
-			'SELECT * FROM users WHERE email = ? AND password = ? AND role = ?',
-			[email, password, 'admin']
-		);
+// 		const [results] = await db.query<UserRow[]>(
+// 			'SELECT * FROM users WHERE email = ? AND password = ? AND role = ?',
+// 			[email, password, 'admin']
+// 		);
 
-		if (results.length === 0) {
-			res.status(401).json({ error: 'Invalid admin credentials' });
-			return;
-		}
+// 		if (results.length === 0) {
+// 			res.status(401).json({ error: 'Invalid credentials' });
+// 			return;
+// 		}
 
-		const user = { ...results[0] };
-		// @ts-ignore
-		delete user.password;
+// 		const user = { ...results[0] };
+// 		// @ts-ignore
+// 		delete user.password;
 
-		res.json({
-			message: 'Admin login successful',
-			user
-		});
-	} catch (err: any) {
-		res.status(500).json({ error: err.message });
-	}
-});
+// 		res.json({
+// 			message: 'login successful',
+// 			user
+// 		});
+// 	} catch (err: any) {
+// 		res.status(500).json({ error: err.message });
+// 	}
+// });
 
 // Register route
 router.post('/register', async (req, res) => {

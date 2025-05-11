@@ -1,64 +1,135 @@
 <script>
   import { page } from '$app/state';
+  import { goto } from '$app/navigation';
   import { auth } from '$lib/stores/auth';
   import '../app.css';
-</script>
+  
+  $: isAdmin = $auth.user?.role === 'admin';
 
-<div class="app">
-  <header class="header">
-    <nav class="nav container">
-      <div class="logo">
-        <a href="/" class="logo-link">Hotel Booking</a>
-      </div>
-      <ul class="nav-links">
-        <li class={page.url.pathname === '/' ? 'active' : ''}>
-          <a href="/">Home</a>
-        </li>
-        <li class={page.url.pathname === '/hotels' ? 'active' : ''}>
-          <a href="/hotels">Hotels</a>
-        </li>
-        <li class={page.url.pathname === '/rooms' ? 'active' : ''}>
-          <a href="/rooms">Rooms</a>
-        </li>
-        {#if $auth.isAuthenticated}
-          <li class={page.url.pathname === '/profile' ? 'active' : ''}>
-            <a href="/profile">Profile</a>
+  function handleLogout() {
+    auth.logout();
+    goto('/login');
+  }
+  </script>
+  
+  {#if isAdmin}
+  <div class="app">
+    <header class="header">
+      <nav class="nav container">
+        <div class="logo">
+          <a href="/" class="logo-link">Hotel Booking</a>
+        </div>
+        <ul class="nav-links">
+          <li class={page.url.pathname === '/admin/dashboard' ? 'active' : ''}>
+            <a href="/admin/dashboard">Dashboard</a>
           </li>
-        {:else}
-          <li class={page.url.pathname === '/login' ? 'active' : ''}>
-            <a href="/login">Login</a>
+          <li class={page.url.pathname === '/admin/hotels' ? 'active' : ''}>
+            <a href="/admin/hotels">Hotels</a>
           </li>
-        {/if}
-      </ul>
-    </nav>
-  </header>
-  <main class="main">
-    <slot/>
-  </main>
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Hotel Booking</h3>
-          <p>Find your perfect stay with us</p>
-        </div>
-        <div class="footer-section">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/hotels">Hotels</a></li>
-            <li><a href="/rooms">Rooms</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Contact</h4>
-          <p>Email: info@hotelbooking.com</p>
-          <p>Phone: +1234567890</p>
+          <li class={page.url.pathname === '/admin/rooms' ? 'active' : ''}>
+            <a href="/admin/rooms">Rooms</a>
+          </li>
+          <li class={page.url.pathname === '/admin/bookings' ? 'active' : ''}>
+            <a href="/admin/bookings">Bookings</a>
+          </li>
+          <li class={page.url.pathname === '/admin/users' ? 'active' : ''}>
+            <a href="/admin/users">Users</a>
+          </li>
+          <li class="logout">
+            <a href="#" on:click={handleLogout}>Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+      <slot/>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Hotel Booking</h3>
+            <p>Find your perfect stay with us</p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/admin/dashboard">Admin</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contact</h4>
+            <p>Email: info@hotelbooking.com</p>
+            <p>Phone: +1234567890</p>
+          </div>
         </div>
       </div>
-    </div>
-  </footer>
-</div>
+    </footer>
+  </div>
+{:else}
+  <div class="app">
+    <header class="header">
+      <nav class="nav container">
+        <div class="logo">
+          <a href="/" class="logo-link">Hotel Booking</a>
+        </div>
+        <ul class="nav-links">
+          <li class={page.url.pathname === '/' ? 'active' : ''}>
+            <a href="/">Home</a>
+          </li>
+          <li class={page.url.pathname === '/hotels' ? 'active' : ''}>
+            <a href="/hotels">Hotels</a>
+          </li>
+          <li class={page.url.pathname === '/rooms' ? 'active' : ''}>
+            <a href="/rooms">Rooms</a>
+          </li>
+          {#if $auth.isAuthenticated}
+            {#if $auth.user?.role === 'admin'}
+              <li class={page.url.pathname === '/admin/dashboard' ? 'active' : ''}>
+                <a href="/admin/dashboard">Admin</a>
+              </li>
+            {/if}
+            <li class={page.url.pathname === '/profile' ? 'active' : ''}>
+              <a href="/profile">Profile</a>
+            </li>
+          {:else}
+            <li class={page.url.pathname === '/login' ? 'active' : ''}>
+              <a href="/login">Login</a>
+            </li>
+          {/if}
+        </ul>
+      </nav>
+    </header>
+    <main class="main">
+      <slot/>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>Hotel Booking</h3>
+            <p>Find your perfect stay with us</p>
+          </div>
+          <div class="footer-section">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <!-- <li><a href="/hotels">Hotels</a></li> -->
+              <!-- <li><a href="/rooms">Rooms</a></li> -->
+              <li><a href="/admin/dashboard">Admin</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h4>Contact</h4>
+            <p>Email: info@hotelbooking.com</p>
+            <p>Phone: +1234567890</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+{/if}
 
 <style>
   .app {
@@ -159,12 +230,6 @@
     opacity: 1;
   }
 
-  .footer-bottom {
-    text-align: center;
-    padding-top: var(--spacing-lg);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
   @media (max-width: 768px) {
     .nav {
       flex-direction: column;
@@ -181,4 +246,5 @@
       text-align: center;
     }
   }
+
 </style>
