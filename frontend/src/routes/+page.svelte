@@ -1,4 +1,4 @@
-<div class="home-container container">
+ííí<div class="home-container container">
   <section class="hero">
     <div class="hero-content">
       <h1>Find Your Perfect Stay</h1>
@@ -8,9 +8,9 @@
           <span>Browse Hotels</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="/rooms" class="button secondary-button">
-          <span>View All Rooms</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <a href="/login" class="button secondary-button">
+          <span>Register</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </a>
       </div>
     </div>
@@ -45,7 +45,7 @@
   }
 
   .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+    background: linear-gradient(rgba(0, 0, 0, 0.096), rgba(0, 0, 0, 0.671)), url('/images/hero-hotel.jpeg');
     background-size: cover;
     background-position: center;
     height: 600px;
@@ -54,9 +54,10 @@
     justify-content: center;
     text-align: center;
     color: var(--text-white);
-    margin: -2rem -1rem 2rem;
+    margin: -2rem calc(-50vw + 50%) 2rem;
     position: relative;
     overflow: hidden;
+    width: 100vw;
   }
 
   .hero-overlay {
@@ -65,7 +66,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, rgba(137, 180, 250, 0.2), rgba(180, 190, 254, 0.2));
+    background: linear-gradient(45deg, rgba(137, 180, 250, 0.3), rgba(180, 190, 254, 0.178));
     z-index: 1;
   }
 
