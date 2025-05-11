@@ -124,107 +124,122 @@
 
 <style>
   .auth-container {
+    min-height: 100vh;
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 200px);
-    padding: 2rem;
+    justify-content: center;
+    padding: var(--spacing-xl);
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
   }
   
   .auth-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
     width: 100%;
     max-width: 400px;
-  }
-  
-  h1 {
-    color: #1C6EA4;
-    margin-bottom: 1.5rem;
-    text-align: center;
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    box-shadow: var(--shadow-lg);
   }
   
   .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
   }
   
-  label {
+  .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
     font-weight: 500;
-    color: #333;
   }
   
-  input {
+  .form-group input {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    color: var(--text-white);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
   }
   
-  input:focus {
+  .form-group input:focus {
     outline: none;
-    border-color: #1C6EA4;
-    box-shadow: 0 0 0 2px rgba(28, 110, 164, 0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.15);
   }
   
   .submit-button {
     width: 100%;
-    padding: 0.75rem;
-    background-color: #1C6EA4;
-    color: white;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
     border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: var(--radius-md);
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all var(--transition-fast);
   }
   
   .submit-button:hover {
-    background-color: #155888;
+    background: linear-gradient(45deg, var(--primary-light), var(--primary));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
   
   .submit-button:disabled {
-    background-color: #ccc;
+    opacity: 0.7;
     cursor: not-allowed;
+    transform: none;
   }
   
   .toggle-form {
-    margin-top: 1.5rem;
     text-align: center;
+    margin-top: var(--spacing-lg);
+    color: var(--text-light);
   }
   
-  .toggle-button {
+  .toggle-form button {
     background: none;
     border: none;
-    color: #1C6EA4;
-    font-weight: 600;
+    color: var(--primary);
+    font-weight: 500;
     cursor: pointer;
-    padding: 0;
-    font-size: 1rem;
+    padding: var(--spacing-xs);
+    transition: all var(--transition-fast);
   }
   
-  .toggle-button:hover {
+  .toggle-form button:hover {
+    color: var(--primary-light);
     text-decoration: underline;
   }
   
   .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 0.75rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
+    background-color: rgba(243, 139, 168, 0.1);
+    color: var(--error);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--error);
   }
   
   .success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 0.75rem;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
+    background-color: rgba(166, 227, 161, 0.1);
+    color: var(--success);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--success);
+  }
+  
+  @media (max-width: 768px) {
+    .auth-container {
+      padding: var(--spacing-md);
+    }
+    
+    .auth-card {
+      padding: var(--spacing-xl);
+    }
   }
 </style>

@@ -227,7 +227,6 @@
 
   .main {
     flex: 1;
-    padding: var(--spacing-xl) 0;
     background: linear-gradient(to bottom, var(--background), var(--card-bg));
   }
 

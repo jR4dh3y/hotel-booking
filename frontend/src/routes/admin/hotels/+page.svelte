@@ -344,307 +344,321 @@
 
 <style>
   .admin-hotels {
-    width: 100%;
+    padding: var(--spacing-xl);
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
   .header-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    margin-bottom: var(--spacing-xl);
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .header-actions h1 {
+    color: var(--text-white);
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
   }
   
   .search-sort {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: var(--spacing-md);
   }
   
   .search-input {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    min-width: 250px;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    color: var(--text-white);
+    font-size: var(--font-size-base);
+    min-width: 200px;
+    transition: all var(--transition-fast);
   }
   
-  .sort-box {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  .search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.15);
   }
   
-  .sort-box select {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-  
-  .sort-direction {
-    background: none;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 0.5rem;
+  .sort-select {
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    color: var(--text-white);
+    font-size: var(--font-size-base);
     cursor: pointer;
+    transition: all var(--transition-fast);
   }
   
-  .add-button {
-    padding: 0.5rem 1rem;
-    background-color: #4CAF50;
-    color: white;
+  .sort-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.15);
+  }
+  
+  .add-hotel-btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    transition: all var(--transition-fast);
   }
   
-  .add-button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Table styles */
-  .table-container {
-    overflow-x: auto;
-    margin-bottom: 2rem;
+  .add-hotel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
   
   .hotels-table {
     width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .hotels-table th, .hotels-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #f0f0f0;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
   }
   
   .hotels-table th {
-    background-color: #f9f9f9;
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
     font-weight: 600;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    text-align: left;
+    padding: var(--spacing-md);
+    border-bottom: 2px solid var(--border-color);
   }
   
-  .hotels-table th:hover {
-    background-color: #f0f0f0;
+  .hotels-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-white);
   }
   
-  .rating-cell {
-    white-space: nowrap;
+  .hotels-table tr:last-child td {
+    border-bottom: none;
   }
   
-  .rating-stars {
-    color: #FFD700;
-    margin-right: 0.5rem;
+  .hotels-table tr:hover td {
+    background-color: rgba(137, 180, 250, 0.1);
   }
   
-  .rating-number {
-    color: #666;
-    font-size: 0.9rem;
-  }
-  
-  .actions-cell {
+  .rating {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .action-button {
-    padding: 0.4rem 0.75rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    text-decoration: none;
-    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: var(--spacing-xs);
+    color: var(--background);
   }
   
-  .action-button.view {
-    background-color: #1C6EA4;
-    color: white;
+  .rating svg {
+    color: var(--background);
   }
   
-  .action-button.edit {
-    background-color: #FFC107;
-    color: #333;
+  .action-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
   }
   
-  .action-button.delete {
-    background-color: #f44336;
-    color: white;
+  .edit-btn,
+  .delete-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
   }
   
-  /* Modal styles */
-  .modal-overlay {
+  .edit-btn {
+    background: linear-gradient(45deg, var(--warning), var(--warning-dark));
+    color: var(--background);
+  }
+  
+  .delete-btn {
+    background: linear-gradient(45deg, var(--error), var(--error-dark));
+    color: var(--background);
+  }
+  
+  .edit-btn:hover,
+  .delete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .modal {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 1000;
   }
   
   .modal-content {
-    background-color: white;
-    border-radius: 8px;
-    padding: 1.5rem;
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
     width: 100%;
     max-width: 500px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-xl);
   }
   
   .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
   }
   
-  .modal-header h3 {
-    margin: 0;
+  .modal-header h2 {
+    color: var(--text-white);
+    font-size: var(--font-size-xl);
+    font-weight: 600;
   }
   
-  .close-button {
+  .close-btn {
     background: none;
     border: none;
-    font-size: 1.5rem;
+    color: var(--text-light);
     cursor: pointer;
-    padding: 0;
+    font-size: var(--font-size-xl);
+    transition: all var(--transition-fast);
+  }
+  
+  .close-btn:hover {
+    color: var(--text-white);
   }
   
   .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--spacing-lg);
   }
   
   .form-group label {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
     font-weight: 500;
   }
   
-  .form-group input {
+  .form-group input,
+  .form-group textarea {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    color: var(--text-white);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
   }
   
-  .rating-input {
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.15);
+  }
+  
+  .form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .error-message {
+    background-color: rgba(243, 139, 168, 0.1);
+    color: var(--error);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--error);
+  }
+  
+  .success-message {
+    background-color: rgba(166, 227, 161, 0.1);
+    color: var(--success);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--success);
+  }
+  
+  .loading-container {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 1rem;
-  }
-  
-  .rating-input input[type="range"] {
-    flex: 1;
-  }
-  
-  .rating-display {
-    white-space: nowrap;
-  }
-  
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-  
-  .cancel-button, .submit-button {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .cancel-button {
-    background-color: #f5f5f5;
-    color: #333;
-  }
-  
-  .submit-button {
-    background-color: #1C6EA4;
-    color: white;
-  }
-  
-  .form-error {
-    padding: 0.75rem;
-    background-color: #f8d7da;
-    color: #721c24;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-success {
-    padding: 0.75rem;
-    background-color: #d4edda;
-    color: #155724;
-    border-radius: 4px;
-    margin-bottom: 1.5rem;
-  }
-  
-  .loading, .error, .no-data {
-    padding: 2rem;
-    text-align: center;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .error {
-    color: #721c24;
-    background-color: #f8d7da;
-  }
-  
-  .retry-button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #1C6EA4;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    min-height: 200px;
+    color: var(--text-light);
   }
   
   @media (max-width: 768px) {
+    .admin-hotels {
+      padding: var(--spacing-md);
+    }
+    
     .header-actions {
       flex-direction: column;
-      align-items: stretch;
+      gap: var(--spacing-lg);
+      padding: var(--spacing-lg);
     }
     
     .search-sort {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    
-    .search-input {
       width: 100%;
-      min-width: auto;
-    }
-    
-    .actions-cell {
       flex-direction: column;
     }
     
-    .action-button {
+    .search-input,
+    .sort-select {
       width: 100%;
-      justify-content: center;
+    }
+    
+    .hotels-table {
+      display: block;
+      overflow-x: auto;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .modal-content {
+      margin: var(--spacing-md);
+      padding: var(--spacing-lg);
     }
   }
 </style>

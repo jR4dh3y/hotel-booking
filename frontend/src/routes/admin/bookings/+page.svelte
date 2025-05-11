@@ -203,7 +203,6 @@
       <h3>Booking Filters</h3>
       <button class="reset-button" on:click={resetFilters}>Reset</button>
     </div>
-    
     <div class="filters-grid">
       <div class="filter-group">
         <label for="search">Search</label>
@@ -302,7 +301,7 @@
         <tbody>
           {#each filteredBookings() as booking}
             <tr>
-              <td>#{booking.booking_id}</td>
+              <td class="booking-id">#{booking.booking_id.toString().padStart(6, '0')}</td>
               <td class="user-info">
                 <div>{booking.user_name}</div>
                 <div class="small-text">{booking.user_email}</div>
@@ -319,12 +318,14 @@
               </td>
               <td>{formatCurrency(booking.payment_amount)}</td>
               <td class="actions-cell">
-                <button 
-                  class="action-button delete"
-                  on:click={() => handleCancelBooking(booking.booking_id)}
-                >
-                  Cancel
-                </button>
+                <div class="action-buttons">
+                  <button 
+                    class="action-button delete"
+                    on:click={() => handleCancelBooking(booking.booking_id)}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </td>
             </tr>
           {/each}
@@ -337,191 +338,259 @@
 <style>
   .admin-bookings {
     width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
   }
   
-  /* Filters Section */
   .filters-section {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-lg);
   }
   
   .filters-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-lg);
   }
   
   .filters-header h3 {
+    color: var(--text-white);
+    font-size: var(--font-size-xl);
+    font-weight: 600;
     margin: 0;
-    font-size: 1.1rem;
-    color: #333;
-  }
-  
-  .reset-button {
-    padding: 0.4rem 1rem;
-    background-color: #f5f5f5;
-    color: #333;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
   }
   
   .filters-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
   }
   
   .filter-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--spacing-sm);
   }
   
   .filter-group label {
-    font-size: 0.9rem;
+    color: var(--text-light);
     font-weight: 500;
-    color: #666;
   }
   
   .filter-group input,
   .filter-group select {
-    padding: 0.6rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.95rem;
+    padding: var(--spacing-md);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--background);
+    color: var(--text-white);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
   }
   
-  /* Results Section */
-  .results-header {
-    margin-bottom: 1rem;
-  }
-  
-  .results-header h3 {
-    font-size: 1rem;
-    color: #666;
-    margin: 0;
+  .filter-group input:focus,
+  .filter-group select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.15);
   }
   
   .table-container {
     overflow-x: auto;
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
   }
   
   .bookings-table {
     width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .bookings-table th, 
-  .bookings-table td {
-    padding: 0.85rem;
-    text-align: left;
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 0.95rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 1200px;
   }
   
   .bookings-table th {
-    background-color: #f9f9f9;
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
     font-weight: 600;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    text-align: left;
+    padding: var(--spacing-md);
+    border-bottom: 2px solid var(--border-color);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
   
-  .bookings-table th:hover {
-    background-color: #f0f0f0;
+  .bookings-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-white);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  
+  .bookings-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .bookings-table tr:hover td {
+    background-color: rgba(137, 180, 250, 0.1);
+  }
+  
+  .booking-id {
+    font-family: monospace;
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
   }
   
   .user-info {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-xs);
   }
   
   .small-text {
-    font-size: 0.85rem;
-    color: #666;
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
   }
   
   .status-badge {
     display: inline-block;
-    padding: 0.25rem 0.5rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    text-transform: capitalize;
+    white-space: nowrap;
   }
   
-  .status-badge.paid {
-    background-color: #d4edda;
-    color: #155724;
+  .status-paid {
+    background-color: rgba(166, 227, 161, 0.2);
+    color: var(--success);
+    border: 1px solid var(--success);
   }
   
-  .status-badge.unpaid {
-    background-color: #f8d7da;
-    color: #721c24;
+  .status-unpaid {
+    background-color: rgba(243, 139, 168, 0.2);
+    color: var(--error);
+    border: 1px solid var(--error);
   }
   
-  .actions-cell {
+  .action-buttons {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
   }
   
   .action-button {
-    padding: 0.4rem 0.75rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
     cursor: pointer;
-    font-size: 0.9rem;
+    transition: all var(--transition-fast);
     white-space: nowrap;
   }
   
   .action-button.delete {
-    background-color: #f44336;
-    color: white;
+    background: linear-gradient(45deg, var(--error), var(--error-dark));
+    color: var(--background);
+  }
+  
+  .action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .reset-button {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  
+  .reset-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
   
   .loading, .error, .no-data {
-    padding: 2rem;
+    padding: var(--spacing-xl);
     text-align: center;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    color: var(--text-white);
   }
   
   .error {
-    color: #721c24;
-    background-color: #f8d7da;
+    color: var(--error);
+    background-color: rgba(243, 139, 168, 0.1);
+    border-color: var(--error);
   }
   
   .retry-button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #1C6EA4;
-    color: white;
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
     cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+  }
+  
+  .retry-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .results-header {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .results-header h3 {
+    color: var(--text-white);
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    margin: 0;
   }
   
   @media (max-width: 768px) {
+    .filters-section {
+      padding: var(--spacing-lg);
+    }
+    
     .filters-grid {
       grid-template-columns: 1fr;
     }
     
     .bookings-table {
-      font-size: 0.85rem;
+      display: block;
+      overflow-x: auto;
     }
     
-    .actions-cell {
+    .action-buttons {
       flex-direction: column;
+    }
+    
+    .action-button {
+      width: 100%;
     }
   }
 </style>
