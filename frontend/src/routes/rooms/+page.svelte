@@ -108,8 +108,8 @@
     </div>
 
     <div class="amenities-filter">
-      <label>Filter by Amenities:</label>
-      <div class="amenities-pills">
+      <label for="amenities-filter">Filter by Amenities:</label>
+      <div id="amenities-filter" class="amenities-pills" role="group" aria-labelledby="amenities-filter">
         {#each availableAmenities as amenity}
           <button 
             class="amenity-pill {selectedAmenities.includes(amenity) ? 'selected' : ''}"
@@ -162,21 +162,24 @@
             </div>
             <div class="room-amenities">
               {#each room.amenities.split(',').filter(Boolean) as amenity}
-                <span class="amenity-tag">{amenity}</span>
+              <span class="amenity-tag">{amenity}</span>
+              
               {/each}
             </div>
           </div>
-          {#if room.availability === 'available'}
+          <div class="room-footer">
+            {#if room.availability === 'available'}
             <a href="/booking/{room.room_id}" class="book-button">
               <span>Book Now</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
-          {:else}
+            {:else}
             <button disabled class="book-button disabled">
               <span>Not Available</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
             </button>
-          {/if}
+            {/if}
+          </div>
         </div>
       {/each}
     </div>
@@ -293,7 +296,7 @@
 
   .room-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--spacing-xl);
   }
 
@@ -302,20 +305,23 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
-    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-fast);
   }
 
   .room-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .room-card.booked {
+    opacity: 0.7;
   }
 
   .room-header {
     padding: var(--spacing-lg);
     background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-    color: var(--background);
+    color: var(--text-black);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -323,26 +329,88 @@
 
   .room-header h3 {
     margin: 0;
-    font-size: var(--font-size-xl);
+    color: var(--text-black);
+    font-size: var(--font-size-lg);
     font-weight: 600;
-    color: var(--background);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   }
 
   .availability {
     padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
-    font-weight: 500;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .availability.available {
     background-color: var(--success);
-    color: var(--background);
+    color: var(--text-black);
   }
 
   .availability.booked {
     background-color: var(--error);
-    color: var(--background);
+    color: var(--text-white);
+  }
+
+  .room-body {
+    padding: var(--spacing-lg);
+  }
+
+  .room-type {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
+    font-size: var(--font-size-base);
+  }
+
+  .price {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .per-night {
+    font-size: var(--font-size-sm);
+    color: var(--text-light);
+    font-weight: normal;
+  }
+
+  .room-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .book-btn {
+    display: inline-block;
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-black);
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
+  }
+
+  .book-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(137, 180, 250, 0.4);
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+  }
+
+  .booked-message {
+    display: block;
+    text-align: center;
+    color: var(--text-light);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .room-details {
@@ -377,24 +445,24 @@
   }
 
   .book-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-sm);
+    display: inline-block;
     width: 100%;
     padding: var(--spacing-md);
-    background-color: var(--primary);
-    color: var(--background);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-black);
+    text-align: center;
     text-decoration: none;
-    font-weight: 500;
+    border-radius: var(--radius-md);
+    font-weight: 600;
     transition: all var(--transition-fast);
-    border: none;
-    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .book-button:hover {
-    background-color: var(--primary-light);
-    color: var(--background);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(137, 180, 250, 0.4);
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary))
   }
 
   .book-button.disabled {

@@ -1,18 +1,19 @@
 :root {
   /* Catppuccin Mocha Color Palette with Improved Contrast */
   --primary: #89b4fa;      /* Blue */
-  --primary-dark: #74c7ec; /* Sapphire */
-  --primary-light: #b4befe; /* Lavender */
-  --secondary: #f9e2af;    /* Yellow */
-  --text-dark: #cdd6f4;    /* Text */
-  --text-light: #a6adc8;   /* Subtext0 */
-  --text-white: #cdd6f4;   /* Text */
+  --primary-dark: #5ea3c3; /* Sapphire */
+  --primary-light: #7287fd; /* Lavender */
+  --secondary: #fada95;    /* Yellow */
+  --text-dark: #fdfdfd;    /* Text */
+  --text-light: #6272a4;   /* Subtext0 */
+  --text-white: #f8f8f2;   /* Text */
   --background: #181825;   /* Darker Base */
   --card-bg: #24273a;      /* Darker Surface0 */
   --border-color: #363a4f; /* Darker Surface1 */
-  --success: #a6e3a1;      /* Green */
-  --error: #f38ba8;        /* Red */
-  --warning: #fab387;      /* Peach */
+  --success: #8ce184;      /* Green */
+  --error: #ff7099;        /* Red */
+  --warning: #f9a46f;      /* Peach */
+
   
   /* Typography */
   --font-family: 'Inter', system-ui, -apple-system, sans-serif;

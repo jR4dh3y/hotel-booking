@@ -215,10 +215,11 @@
   }
 
   .user-info h1 {
-    color: var(--text-white);
+    color: var(--text-dark);
     margin: 0;
     font-size: var(--font-size-3xl);
     font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   }
 
   .email {
@@ -227,8 +228,9 @@
   }
 
   .logout-button {
+    color: var(--text-light);
     padding: var(--spacing-sm) var(--spacing-lg);
-    background: linear-gradient(45deg, var(--error), var(--error-dark));
+    background: var(--error);
     color: var(--background);
     border: none;
     border-radius: var(--radius-md);
@@ -328,28 +330,30 @@
 
   .booking-header h3 {
     margin: 0;
+    color: var(--text-dark);
     font-size: var(--font-size-lg);
     font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
   }
 
   .status {
     padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
-    font-weight: 500;
-    text-transform: capitalize;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .status.paid {
-    background-color: rgba(166, 227, 161, 0.2);
-    color: var(--success);
-    border: 1px solid var(--success);
+    background-color: var(--success);
+    color: var(--text-black);
   }
 
   .status.unpaid {
-    background-color: rgba(243, 139, 168, 0.2);
-    color: var(--error);
-    border: 1px solid var(--error);
+    background-color: var(--error);
+    color: var(--text-white);
   }
 
   .booking-details {
@@ -381,45 +385,50 @@
   }
 
   .pay-button, .cancel-button {
-    display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: var(--spacing-sm) var(--spacing-lg);
+    min-width: 120px;
+    display: inline-block;
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-black);
+    text-align: center;
+    text-decoration: none;
     border-radius: var(--radius-md);
     font-weight: 600;
-    text-decoration: none;
     transition: all var(--transition-fast);
-    border: none;
-    cursor: pointer;
-    font-size: var(--font-size-base);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: var(--shadow-md);
-    color: var(--text-white);
-    min-width: 120px;
   }
 
   .pay-button {
-    background: linear-gradient(45deg, var(--success), var(--success-dark));
-    border: 1px solid var(--success);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-dark);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   .pay-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(166, 227, 161, 0.4);
-    background: linear-gradient(45deg, var(--success-dark), var(--success));
+    box-shadow: 0 0 15px rgba(137, 180, 250, 0.4);
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+    color: var(--success);
   }
 
   .cancel-button {
-    background: linear-gradient(45deg, var(--error), var(--error-dark));
-    border: 1px solid var(--error);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+
   }
 
   .cancel-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 15px rgba(243, 139, 168, 0.4);
-    background: linear-gradient(45deg, var(--error-dark), var(--error));
+    box-shadow: 0 0 15px rgba(137, 180, 250, 0.4);
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+    color: var(--error);
   }
+
 
   .cancel-button:disabled {
     opacity: 0.7;
@@ -486,5 +495,171 @@
     .bookings-list {
       grid-template-columns: 1fr;
     }
+  }
+
+  .profile-card {
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-fast);
+  }
+
+  .profile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .profile-header {
+    padding: var(--spacing-lg);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-black);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .profile-header h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+  }
+
+  .profile-body {
+    padding: var(--spacing-lg);
+  }
+
+  .profile-info {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
+    font-size: var(--font-size-base);
+  }
+
+  .profile-value {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .profile-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .edit-btn {
+    display: inline-block;
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-black);
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(137, 180, 250, 0.4);
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+  }
+
+  .booking-card {
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-fast);
+  }
+
+  .booking-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .booking-header {
+    padding: var(--spacing-lg);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-black);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .booking-header h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+  }
+
+  .booking-status {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .booking-status.confirmed {
+    background-color: var(--success);
+    color: var(--text-black);
+  }
+
+  .booking-status.pending {
+    background-color: var(--warning);
+    color: var(--text-black);
+  }
+
+  .booking-status.cancelled {
+    background-color: var(--error);
+    color: var(--text-white);
+  }
+
+  .booking-body {
+    padding: var(--spacing-lg);
+  }
+
+  .booking-info {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-light);
+    font-size: var(--font-size-base);
+  }
+
+  .booking-value {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .booking-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .cancel-btn {
+    display: inline-block;
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--error), var(--error));
+    color: var(--text-white);
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .cancel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 85, 85, 0.4);
+    background: linear-gradient(45deg, var(--error), var(--error));
   }
 </style> 

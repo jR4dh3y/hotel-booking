@@ -185,19 +185,23 @@
     padding: var(--spacing-lg);
     background: linear-gradient(45deg, var(--primary), var(--primary-dark));
     color: var(--background);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .hotel-header h2 {
     margin: 0;
     font-size: var(--font-size-xl);
     font-weight: 600;
-    color: var(--background);
+    color: var(--text-dark);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   }
 
   .rating {
-    color: var(--background);
+    color: var(--text-dark);
     font-size: var(--font-size-lg);
-    margin-top: var(--spacing-sm);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   }
 
   .hotel-body {
@@ -228,23 +232,25 @@
   }
 
   .view-rooms-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    background-color: var(--primary);
-    color: var(--background);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border-radius: var(--radius-md);
+    display: inline-block;
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--text-black);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-align: center;
     text-decoration: none;
-    font-weight: 500;
+    border-radius: var(--radius-md);
+    font-weight: 600;
     transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .view-rooms-btn:hover {
-    background-color: var(--primary-light);
-    color: var(--background);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 0 15px rgba(137, 180, 250, 0.4);
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary))
   }
 
   .loading, .error, .no-hotels {

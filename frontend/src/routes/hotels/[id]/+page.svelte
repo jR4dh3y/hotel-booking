@@ -248,8 +248,11 @@
 
   .room-header h3 {
     margin: 0;
+    color: var(--text-black);
     font-size: var(--font-size-lg);
     font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
   }
 
   .availability {
@@ -303,7 +306,7 @@
     width: 100%;
     padding: var(--spacing-md);
     background: linear-gradient(45deg, var(--primary), var(--primary-dark));
-    color: var(--text-black);
+    color: var(--text-white);
     text-align: center;
     text-decoration: none;
     border-radius: var(--radius-md);
@@ -311,6 +314,8 @@
     transition: all var(--transition-fast);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+
   }
 
   .book-btn:hover {
