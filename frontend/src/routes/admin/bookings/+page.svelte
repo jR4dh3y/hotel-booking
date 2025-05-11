@@ -42,7 +42,7 @@
       loading = true;
       error = '';
       
-      const response = await fetch('http://localhost:3000/api/admin/bookings');
+      const response = await fetch('http://localhost:3000/api/bookings/admin');
       
       if (!response.ok) {
         const data = await response.json();

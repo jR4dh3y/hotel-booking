@@ -31,8 +31,11 @@
       loading = true;
       error = '';
       
-      const response = await fetch('http://localhost:3000/api/admin/users');
-      if (!response.ok) throw new Error('Failed to load users');
+      const response = await fetch('http://localhost:3000/api/auth/admin/users');
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to load users');
+      }
       
       users = await response.json();
     } catch (err: any) {
@@ -82,7 +85,7 @@
       
       if (formMode === 'add') {
         // Create new user
-        response = await fetch('http://localhost:3000/api/admin/users', {
+        response = await fetch('http://localhost:3000/api/auth/admin/users', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -97,7 +100,7 @@
           delete userData.password;
         }
         
-        response = await fetch(`http://localhost:3000/api/admin/users/${currentUser.user_id}`, {
+        response = await fetch(`http://localhost:3000/api/auth/admin/users/${currentUser.user_id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -136,7 +139,7 @@
     try {
       loading = true;
       
-      const response = await fetch(`http://localhost:3000/api/admin/users/${id}`, {
+      const response = await fetch(`http://localhost:3000/api/auth/admin/users/${id}`, {
         method: 'DELETE'
       });
       

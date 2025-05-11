@@ -2,62 +2,105 @@
   import { onMount } from 'svelte';
   import { auth } from '$lib/stores/auth';
   import { goto } from '$app/navigation';
-  
-  // Dashboard statistics
+  import type { Unsubscriber } from 'svelte/store';
+
+  type Booking = {
+    _id: string;
+    customer: { firstName: string; lastName: string };
+    room: { roomNumber: string };
+    checkInDate: string;
+    checkOutDate: string;
+    status: string;
+    totalPrice: number;
+  };
+
+  type Customer = {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
+
   let stats = {
     totalBookings: 0,
     totalRevenue: 0,
     occupancyRate: 0,
     totalCustomers: 0
   };
-  
-  // Recent bookings
-  let recentBookings = [];
+
+  let recentBookings: Booking[] = [];
   let loading = true;
   let error = '';
-  
-  onMount(async () => {
-    // Check if user is admin
-    const unsubscribe = auth.subscribe((state) => {
+  let unsubscribe: Unsubscriber | null = null;
+
+  onMount(() => {
+    unsubscribe = auth.subscribe((state) => {
       if (!state.isAuthenticated || state.user?.role !== 'admin') {
         goto('/admin/login');
       }
     });
-    
-    try {
-      // Fetch dashboard statistics
-      const response = await fetch('http://localhost:3000/api/admin/dashboard/stats', {
-        credentials: 'include'
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch dashboard data');
+
+    (async () => {
+      try {
+        // Fetch dashboard stats
+        console.log('Fetching dashboard stats...');
+        const statsResponse = await fetch('http://localhost:3000/api/bookings/stats');
+        if (!statsResponse.ok) {
+          const errorData = await statsResponse.json();
+          throw new Error(`Failed to fetch stats: ${errorData.error || statsResponse.statusText}`);
+        }
+        stats = await statsResponse.json();
+        console.log('Stats fetched successfully:', stats);
+
+        // Fetch recent bookings
+        console.log('Fetching recent bookings...');
+        const bookingsResponse = await fetch('http://localhost:3000/api/bookings');
+        if (!bookingsResponse.ok) {
+          const errorData = await bookingsResponse.json();
+          throw new Error(`Failed to fetch bookings: ${errorData.error || bookingsResponse.statusText}`);
+        }
+        const bookings = await bookingsResponse.json();
+        console.log('Bookings fetched successfully:', bookings);
+
+        // Transform bookings data to match the frontend format
+        recentBookings = bookings
+          .map((booking: any) => ({
+            _id: booking.booking_id.toString(),
+            customer: {
+              firstName: booking.user_name?.split(' ')[0] || 'Unknown',
+              lastName: booking.user_name?.split(' ')[1] || ''
+            },
+            room: {
+              roomNumber: booking.room_number?.toString() || 'N/A'
+            },
+            checkInDate: new Date(booking.check_in_date).toISOString(),
+            checkOutDate: new Date(booking.check_out_date).toISOString(),
+            status: booking.payment_status === 'paid' ? 'Confirmed' : 'Pending',
+            totalPrice: booking.total_price || 0
+          }))
+          .sort((a: Booking, b: Booking) => new Date(b.checkInDate).getTime() - new Date(a.checkInDate).getTime())
+          .slice(0, 5);
+
+      } catch (err) {
+        console.error('Dashboard error:', err);
+        error = err instanceof Error ? err.message : 'Failed to load dashboard data. Please try again.';
+      } finally {
+        loading = false;
       }
-      
-      const data = await response.json();
-      stats = data.stats;
-      recentBookings = data.recentBookings;
-      
-    } catch (err) {
-      console.error('Dashboard error:', err);
-      error = 'Failed to load dashboard data. Please try again.';
-    } finally {
-      loading = false;
-    }
-    
-    return unsubscribe;
+    })();
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   });
-  
-  // Format currency
-  function formatCurrency(amount) {
+
+  function formatCurrency(amount: number) {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD'
     }).format(amount);
   }
-  
-  // Format date
-  function formatDate(dateString) {
+
+  function formatDate(dateString: string) {
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric', 
       month: 'short', 
@@ -169,7 +212,7 @@
                   <td>{formatDate(booking.checkInDate)}</td>
                   <td>{formatDate(booking.checkOutDate)}</td>
                   <td>
-                    <span class="status-badge status-{booking.status.toLowerCase()}">
+                    <span class="status-badge status-{booking.status ? booking.status.toLowerCase() : ''}">
                       {booking.status}
                     </span>
                   </td>

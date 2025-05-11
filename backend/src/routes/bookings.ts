@@ -130,4 +130,71 @@ router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
 	}
 });
 
+// Get dashboard statistics
+router.get('/stats', async (req: Request, res: Response): Promise<void> => {
+	try {
+		// Get total bookings
+		const [totalBookings] = await db.query<RowDataPacket[]>(
+			'SELECT COUNT(*) as count FROM booking'
+		);
+
+		// Get total revenue
+		const [totalRevenue] = await db.query<RowDataPacket[]>(
+			'SELECT COALESCE(SUM(amount), 0) as total FROM payment'
+		);
+
+		// Get total customers
+		const [totalCustomers] = await db.query<RowDataPacket[]>(
+			'SELECT COUNT(*) as count FROM users WHERE role = "user"'
+		);
+
+		// Get occupancy rate
+		const [occupancyStats] = await db.query<RowDataPacket[]>(
+			`SELECT 
+				COUNT(CASE WHEN availability = 'booked' THEN 1 END) as booked_rooms,
+				COUNT(*) as total_rooms
+			   FROM rooms`
+		);
+
+		const occupancyRate = Math.round((occupancyStats[0].booked_rooms / occupancyStats[0].total_rooms) * 100);
+
+		res.json({
+			totalBookings: totalBookings[0].count,
+			totalRevenue: totalRevenue[0].total,
+			totalCustomers: totalCustomers[0].count,
+			occupancyRate
+		});
+	} catch (err: any) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
+// Get detailed booking information for admin
+router.get('/admin', async (req: Request, res: Response): Promise<void> => {
+	try {
+		const [rows] = await db.query<BookingRow[]>(
+			`SELECT 
+				b.*,
+				r.room_number,
+				h.hotel_name,
+				h.location,
+				rt.room_type,
+				u.name as user_name,
+				u.email as user_email,
+				COALESCE(p.amount, 0) as payment_amount,
+				DATEDIFF(b.check_out_date, b.check_in_date) as duration_days
+			FROM booking b
+			JOIN rooms r ON b.room_id = r.room_id
+			JOIN hotels h ON r.hotel_id = h.hotel_id
+			JOIN room_types rt ON r.room_type_id = rt.room_type_id
+			JOIN users u ON b.user_id = u.user_id
+			LEFT JOIN payment p ON b.booking_id = p.booking_id
+			ORDER BY b.check_in_date DESC`
+		);
+		res.json(rows);
+	} catch (err: any) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
 export default router;
