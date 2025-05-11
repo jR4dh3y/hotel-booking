@@ -139,12 +139,15 @@
   }
 
   .header {
-    background-color: var(--primary);
+    background-color: var(--card-bg);
     color: var(--text-white);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
     position: sticky;
     top: 0;
     z-index: 100;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .nav {
@@ -157,19 +160,31 @@
   .logo {
     font-size: var(--font-size-xl);
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
   }
 
   .logo-link {
     color: var(--text-white);
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: transform var(--transition-fast);
+  }
+
+  .logo-link:hover {
+    transform: translateY(-2px);
   }
 
   .nav-links {
     display: flex;
     list-style: none;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
     margin: 0;
     padding: 0;
+    align-items: center;
   }
 
   .nav-links a {
@@ -177,26 +192,50 @@
     text-decoration: none;
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--radius-md);
-    transition: background-color var(--transition-fast);
+    transition: all var(--transition-fast);
+    font-weight: 500;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary);
+    transition: all var(--transition-fast);
+    transform: translateX(-50%);
+  }
+
+  .nav-links a:hover::after {
+    width: 80%;
   }
 
   .nav-links a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--primary);
   }
 
   .nav-links .active a {
-    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--primary);
+  }
+
+  .nav-links .active a::after {
+    width: 80%;
   }
 
   .main {
     flex: 1;
     padding: var(--spacing-xl) 0;
+    background: linear-gradient(to bottom, var(--background), var(--card-bg));
   }
 
   .footer {
-    background-color: var(--primary);
+    background-color: var(--card-bg);
     color: var(--text-white);
     padding: var(--spacing-xl) 0 var(--spacing-md);
+    border-top: 1px solid var(--border-color);
   }
 
   .footer-content {
@@ -209,6 +248,7 @@
   .footer-section h3, .footer-section h4 {
     color: var(--text-white);
     margin-bottom: var(--spacing-md);
+    font-weight: 600;
   }
 
   .footer-section ul {
@@ -223,28 +263,50 @@
   .footer-section a {
     color: var(--text-white);
     opacity: 0.8;
-    transition: opacity var(--transition-fast);
+    transition: all var(--transition-fast);
+    display: inline-block;
   }
 
   .footer-section a:hover {
     opacity: 1;
+    color: var(--primary);
+    transform: translateX(5px);
+  }
+
+  .logout a {
+    color: var(--error);
+  }
+
+  .logout a:hover {
+    color: var(--error);
+    background-color: rgba(243, 139, 168, 0.1);
   }
 
   @media (max-width: 768px) {
     .nav {
       flex-direction: column;
       gap: var(--spacing-md);
+      padding: var(--spacing-md);
     }
 
     .nav-links {
       flex-wrap: wrap;
       justify-content: center;
+      gap: var(--spacing-sm);
+    }
+
+    .nav-links a {
+      padding: var(--spacing-xs) var(--spacing-sm);
     }
 
     .footer-content {
       grid-template-columns: 1fr;
       text-align: center;
+      gap: var(--spacing-lg);
+    }
+
+    .footer-section a:hover {
+      transform: none;
     }
   }
-
 </style>

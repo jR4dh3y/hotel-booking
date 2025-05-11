@@ -84,22 +84,27 @@
 </script>
 
 <div class="rooms-container">
-  <h1>Available Rooms</h1>
-  <p class="subtitle">Browse and book rooms from our selection</p>
+  <div class="page-header">
+    <h1>Available Rooms</h1>
+    <p class="subtitle">Browse and book rooms from our selection</p>
+  </div>
 
   <div class="filter-section">
     <div class="hotel-filter">
       <label for="hotel-filter">Filter by Hotel:</label>
-      <select 
-        id="hotel-filter" 
-        bind:value={selectedHotelId} 
-        on:change={filterRoomsByHotel}
-      >
-        <option value={null}>All Hotels</option>
-        {#each hotels as hotel}
-          <option value={hotel.hotel_id}>{hotel.hotel_name}</option>
-        {/each}
-      </select>
+      <div class="select-wrapper">
+        <select 
+          id="hotel-filter" 
+          bind:value={selectedHotelId} 
+          on:change={filterRoomsByHotel}
+        >
+          <option value={null}>All Hotels</option>
+          {#each hotels as hotel}
+            <option value={hotel.hotel_id}>{hotel.hotel_name}</option>
+          {/each}
+        </select>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="select-icon"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
     </div>
 
     <div class="amenities-filter">
@@ -119,14 +124,17 @@
 
   {#if loading}
     <div class="loading">
+      <div class="loading-spinner"></div>
       <p>Loading rooms...</p>
     </div>
   {:else if error}
     <div class="error">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="error-icon"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <p>{error}</p>
     </div>
   {:else if rooms.length === 0}
     <div class="no-rooms">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="no-rooms-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <p>No rooms available with the selected filters.</p>
     </div>
   {:else}
@@ -140,19 +148,34 @@
             </span>
           </div>
           <div class="room-details">
-            <p><strong>Hotel:</strong> {room.hotel_name}</p>
-            <p><strong>Type:</strong> {room.room_type}</p>
-            <p><strong>Price:</strong> {formatPrice(room.price)}/night</p>
+            <div class="detail-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="detail-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>{room.hotel_name}</span>
+            </div>
+            <div class="detail-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="detail-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>{room.room_type}</span>
+            </div>
+            <div class="detail-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="detail-icon"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>{formatPrice(room.price)}/night</span>
+            </div>
             <div class="room-amenities">
               {#each room.amenities.split(',').filter(Boolean) as amenity}
-                <span class="amenity-pill">{amenity}</span>
+                <span class="amenity-tag">{amenity}</span>
               {/each}
             </div>
           </div>
           {#if room.availability === 'available'}
-            <a href="/booking/{room.room_id}" class="book-button">Book Now</a>
+            <a href="/booking/{room.room_id}" class="book-button">
+              <span>Book Now</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
           {:else}
-            <button disabled class="book-button disabled">Not Available</button>
+            <button disabled class="book-button disabled">
+              <span>Not Available</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </button>
           {/if}
         </div>
       {/each}
@@ -162,99 +185,137 @@
 
 <style>
   .rooms-container {
-    max-width: 1200px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
   }
 
   h1 {
-    color: #1C6EA4;
-    margin-bottom: 0.5rem;
+    color: var(--text-white);
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--spacing-sm);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   .subtitle {
-    color: #666;
-    margin-bottom: 2rem;
+    color: var(--text-light);
+    font-size: var(--font-size-lg);
   }
 
   .filter-section {
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-2xl);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--spacing-lg);
+    background-color: var(--card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
   }
 
   .hotel-filter, .amenities-filter {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--spacing-sm);
+  }
+
+  label {
+    color: var(--text-white);
+    font-weight: 500;
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+
+  .select-icon {
+    position: absolute;
+    right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    pointer-events: none;
+  }
+
+  select {
+    width: 100%;
+    padding: var(--spacing-md);
+    padding-right: calc(var(--spacing-md) * 2 + 24px);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    background-color: var(--background);
+    color: var(--text-white);
+    appearance: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.15);
   }
 
   .amenities-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--spacing-sm);
   }
 
   .amenity-pill {
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-full);
+    background-color: var(--background);
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
+    font-size: var(--font-size-sm);
+  }
+
+  .amenity-pill:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
   }
 
   .amenity-pill.selected {
-    background-color: #1C6EA4;
-    color: white;
-    border-color: #1C6EA4;
-  }
-
-  .room-amenities {
-    margin-top: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .room-amenities .amenity-pill {
-    cursor: default;
-    font-size: 0.8rem;
-  }
-
-  select {
-    padding: 0.5rem;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
+    background-color: var(--primary);
+    color: var(--background);
+    border-color: var(--primary);
   }
 
   .room-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-xl);
   }
 
   .room-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    background: linear-gradient(145deg, var(--card-bg), var(--background));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
   }
 
   .room-card:hover {
     transform: translateY(-5px);
-  }
-
-  .room-card.booked {
-    opacity: 0.7;
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
   }
 
   .room-header {
-    background-color: #f5f5f5;
-    padding: 1rem;
+    padding: var(--spacing-lg);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -262,64 +323,135 @@
 
   .room-header h3 {
     margin: 0;
-    color: #333;
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--background);
   }
 
   .availability {
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: bold;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
   }
 
   .availability.available {
-    background-color: #d4edda;
-    color: #155724;
+    background-color: var(--success);
+    color: var(--background);
   }
 
   .availability.booked {
-    background-color: #f8d7da;
-    color: #721c24;
+    background-color: var(--error);
+    color: var(--background);
   }
 
   .room-details {
-    padding: 1rem;
+    padding: var(--spacing-lg);
   }
 
-  .room-details p {
-    margin: 0.5rem 0;
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-white);
+  }
+
+  .detail-icon {
+    color: var(--primary);
+  }
+
+  .room-amenities {
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .amenity-tag {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    background-color: rgba(137, 180, 250, 0.1);
+    color: var(--primary);
+    font-size: var(--font-size-sm);
   }
 
   .book-button {
-    display: block;
-    background-color: #1C6EA4;
-    color: white;
-    text-align: center;
-    padding: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    padding: var(--spacing-md);
+    background-color: var(--primary);
+    color: var(--background);
     text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
   }
 
   .book-button:hover {
-    background-color: #155888;
+    background-color: var(--primary-light);
+    color: var(--background);
   }
 
   .book-button.disabled {
-    background-color: #ccc;
+    background-color: var(--border-color);
+    color: var(--text-light);
     cursor: not-allowed;
   }
 
   .loading, .error, .no-rooms {
     text-align: center;
-    padding: 2rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    margin-top: 2rem;
+    padding: var(--spacing-2xl);
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 
   .error {
-    background-color: #f8d7da;
-    color: #721c24;
+    color: var(--error);
+    background-color: rgba(243, 139, 168, 0.1);
+  }
+
+  .error-icon, .no-rooms-icon {
+    color: var(--text-light);
+  }
+
+  @media (max-width: 768px) {
+    .room-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .rooms-container {
+      padding: var(--spacing-lg) var(--spacing-sm);
+    }
+
+    h1 {
+      font-size: var(--font-size-3xl);
+    }
+
+    .filter-section {
+      padding: var(--spacing-md);
+    }
   }
 </style>
