@@ -251,8 +251,8 @@
     <div class="filters-header">
       <h3>Rooms Management</h3>
       <div class="header-actions">
-        <button class="reset-button" on:click={resetFilters}>Reset Filters</button>
-        <button class="add-button" on:click={showAddForm}>
+        <button class="button" on:click={resetFilters}>Reset Filters</button>
+        <button class="button" on:click={showAddForm}>
           <span class="icon">➕</span> Add Room
         </button>
       </div>
@@ -956,31 +956,49 @@
     border-radius: var(--radius-md);
     cursor: pointer;
   }
-  
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
     .admin-rooms {
       padding: var(--spacing-md);
     }
     
     .filters-section {
-      padding: var(--spacing-lg);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
     }
     
     .filters-grid {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
     
     .rooms-grid {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
     
     .action-buttons {
       flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+    
+    .room-card {
+      margin-bottom: var(--spacing-md);
     }
     
     .modal-content {
-      margin: var(--spacing-md);
-      padding: var(--spacing-lg);
+      margin: var(--spacing-sm);
+      padding: var(--spacing-md);
+      max-width: calc(100% - var(--spacing-md));
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .room-actions {
+      padding: var(--spacing-md);
+    }
+    
+    .results-header h3 {
+      font-size: var(--font-size-sm);
     }
   }
 </style>

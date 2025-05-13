@@ -332,19 +332,54 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-
   @media (max-width: 768px) {
     .hotel-detail-container {
-      padding: var(--spacing-lg) var(--spacing-sm);
+      padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .hotel-header {
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    h1 {
+      font-size: var(--font-size-xl);
     }
 
     .room-grid {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
 
     .hotel-info {
       flex-direction: column;
       align-items: flex-start;
+      gap: var(--spacing-sm);
+    }
+    
+    .back-btn {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .room-card {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .room-header {
+      padding: var(--spacing-md);
+    }
+    
+    .room-body {
+      padding: var(--spacing-md);
+    }
+    
+    .room-footer {
+      padding: var(--spacing-md);
+    }
+    
+    h2 {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
     }
   }
 </style>

@@ -418,18 +418,53 @@
     box-shadow: var(--shadow-md);
     border-color: var(--primary);
   }
-
   @media (max-width: 768px) {
     .booking-container {
-      padding: var(--spacing-lg) var(--spacing-sm);
+      padding: var(--spacing-md) var(--spacing-sm);
     }
-
+    
+    h1 {
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .room-summary {
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .room-summary h2 {
+      font-size: var(--font-size-lg);
+    }
+    
+    .user-info {
+      padding: var(--spacing-md);
+    }
+    
+    .booking-form {
+      padding: var(--spacing-lg);
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    
+    .booking-summary {
+      padding: var(--spacing-md);
+    }
+    
     .success-actions {
       flex-direction: column;
+      gap: var(--spacing-sm);
     }
 
     .view-bookings-button, .back-button {
       width: 100%;
+    }
+    
+    .booking-success {
+      padding: var(--spacing-lg);
     }
   }
 </style>

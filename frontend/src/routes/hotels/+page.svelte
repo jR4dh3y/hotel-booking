@@ -286,10 +286,10 @@
   .error-icon, .no-hotels-icon {
     color: var(--text-light);
   }
-
   @media (max-width: 768px) {
     .hotel-grid {
       grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
     }
 
     .hotels-container {
@@ -297,7 +297,30 @@
     }
 
     h1 {
-      font-size: var(--font-size-3xl);
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .subtitle {
+      font-size: var(--font-size-base);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .filter-container {
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .hotel-card {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .hotel-header h2 {
+      font-size: var(--font-size-lg);
+    }
+    
+    .hotel-body {
+      padding: var(--spacing-md);
     }
   }
 </style> 

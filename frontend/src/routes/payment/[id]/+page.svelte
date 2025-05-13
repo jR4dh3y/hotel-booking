@@ -173,9 +173,37 @@
   .success {
     text-align: center;
     color: var(--success);
-  }
-  .error {
+  }  .error {
     color: var(--error);
     text-align: center;
   }
-</style> 
+  
+  @media (max-width: 768px) {
+    .payment-container {
+      padding: var(--spacing-md);
+      max-width: 100%;
+    }
+    
+    h1 {
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .payment-form {
+      gap: var(--spacing-sm);
+    }
+    
+    .form-group {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    input {
+      padding: var(--spacing-sm);
+    }
+  }
+</style>

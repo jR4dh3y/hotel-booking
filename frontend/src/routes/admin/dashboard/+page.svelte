@@ -35,7 +35,7 @@
   onMount(() => {
     unsubscribe = auth.subscribe((state) => {
       if (!state.isAuthenticated || state.user?.role !== 'admin') {
-        goto('/admin/login');
+        goto('/login');
       }
     });
 
@@ -230,9 +230,10 @@
   {/if}
 </div>
 
-<style>
-  .admin-dashboard {
+<style>  .admin-dashboard {
     width: 100%;
+    max-width: 100%;
+    position: relative;
   }
   
   .dashboard-header {
@@ -432,19 +433,34 @@
     padding: var(--spacing-xl);
     color: var(--text-light);
   }
-  
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
     .stat-cards {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
     
     .dashboard-section {
-      padding: var(--spacing-lg);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .dashboard-header h1 {
+      font-size: var(--font-size-xl);
     }
     
     .bookings-table {
       display: block;
       overflow-x: auto;
+      font-size: var(--font-size-sm);
+    }
+    
+    .bookings-table th,
+    .bookings-table td {
+      padding: var(--spacing-sm);
+    }
+    
+    .stat-value {
+      font-size: var(--font-size-xl);
     }
   }
 </style>

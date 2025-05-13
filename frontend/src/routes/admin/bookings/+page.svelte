@@ -570,19 +570,30 @@
     font-weight: 500;
     margin: 0;
   }
-  
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
+    .admin-bookings {
+      padding: var(--spacing-md);
+    }
+    
     .filters-section {
-      padding: var(--spacing-lg);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
     }
     
     .filters-grid {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
     
     .bookings-table {
       display: block;
       overflow-x: auto;
+      font-size: var(--font-size-sm);
+    }
+    
+    .bookings-table th,
+    .bookings-table td {
+      padding: var(--spacing-sm);
     }
     
     .action-buttons {

@@ -672,32 +672,47 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
     .admin-users {
       padding: var(--spacing-md);
     }
     
     .filters-section {
-      padding: var(--spacing-lg);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
     }
     
     .filters-grid {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
     
     .users-table {
       display: block;
       overflow-x: auto;
+      font-size: var(--font-size-sm);
+    }
+    
+    .users-table th,
+    .users-table td {
+      padding: var(--spacing-sm);
     }
     
     .action-buttons {
       flex-direction: column;
+      gap: var(--spacing-xs);
     }
     
     .modal-content {
-      margin: var(--spacing-md);
-      padding: var(--spacing-lg);
+      margin: var(--spacing-sm);
+      padding: var(--spacing-md);
+      width: calc(100% - var(--spacing-md) * 2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .filters-header h3 {
+      font-size: var(--font-size-lg);
     }
   }
 </style>

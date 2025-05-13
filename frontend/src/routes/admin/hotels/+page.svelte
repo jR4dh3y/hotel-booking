@@ -196,18 +196,6 @@
           class="search-input" 
         />
       </div>
-      
-      <div class="sort-box">
-        <label for="sort">Sort by:</label>
-        <select id="sort" bind:value={sortField}>
-          <option value="hotel_name">Name</option>
-          <option value="location">Location</option>
-          <option value="rating">Rating</option>
-        </select>
-        <button class="sort-direction" on:click={() => sortDirection = sortDirection === 'asc' ? 'desc' : 'asc'}>
-          {sortDirection === 'asc' ? '↑' : '↓'}
-        </button>
-      </div>
     </div>
     
     <button class="add-button" on:click={showAddForm}>
@@ -327,11 +315,13 @@
                 <button class="action-button edit" on:click={() => showEditForm(hotel)}>
                   ✏️ Edit
                 </button>
+                <button class="action-button delete" on:click={() => handleDeleteHotel(hotel.hotel_id)}>
+                  🗑️ Delete
+                </button>
+                <button>
                 <a href="/admin/hotels/{hotel.hotel_id}" class="action-button view">
                   🔍 View Rooms
                 </a>
-                <button class="action-button delete" on:click={() => handleDeleteHotel(hotel.hotel_id)}>
-                  🗑️ Delete
                 </button>
               </td>
             </tr>
@@ -625,21 +615,21 @@
     min-height: 200px;
     color: var(--text-light);
   }
-  
-  @media (max-width: 768px) {
+    @media (max-width: 768px) {
     .admin-hotels {
       padding: var(--spacing-md);
     }
     
     .header-actions {
       flex-direction: column;
-      gap: var(--spacing-lg);
-      padding: var(--spacing-lg);
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
     }
     
     .search-sort {
       width: 100%;
       flex-direction: column;
+      gap: var(--spacing-md);
     }
     
     .search-input,
@@ -650,15 +640,34 @@
     .hotels-table {
       display: block;
       overflow-x: auto;
+      font-size: var(--font-size-sm);
+    }
+    
+    .hotels-table th,
+    .hotels-table td {
+      padding: var(--spacing-sm);
     }
     
     .action-buttons {
       flex-direction: column;
+      gap: var(--spacing-xs);
     }
     
     .modal-content {
-      margin: var(--spacing-md);
-      padding: var(--spacing-lg);
+      margin: var(--spacing-sm);
+      padding: var(--spacing-md);
+      max-width: calc(100% - var(--spacing-md));
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .page-title {
+      font-size: var(--font-size-xl);
+    }
+    
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
   }
 </style>

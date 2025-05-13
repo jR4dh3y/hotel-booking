@@ -50,14 +50,14 @@
     gap: var(--spacing-md);
     flex-wrap: wrap;
   }
-
-  /* .admin-content {
+  .admin-content {
     background: linear-gradient(145deg, var(--card-bg), var(--background));
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: var(--spacing-xl);
     box-shadow: var(--shadow-lg);
-  } */
+    width: 100%;
+  }
 
   @media (max-width: 768px) {
     main {

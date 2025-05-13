@@ -224,10 +224,13 @@
   .nav-links .active a::after {
     width: 80%;
   }
-
   .main {
     flex: 1;
     background: linear-gradient(to bottom, var(--background), var(--card-bg));
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
   }
 
   .footer {

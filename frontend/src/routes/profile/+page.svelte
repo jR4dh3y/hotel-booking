@@ -474,26 +474,52 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
   }
-
   @media (max-width: 768px) {
+    .profile-container {
+      padding: var(--spacing-md);
+    }
+    
     .profile-header {
       flex-direction: column;
       text-align: center;
       gap: var(--spacing-md);
+      padding: var(--spacing-lg);
+    }
+
+    .profile-header h1 {
+      font-size: var(--font-size-xl);
     }
 
     .stats-section {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
     }
 
     .booking-header {
       flex-direction: column;
       gap: var(--spacing-sm);
       text-align: center;
+      padding: var(--spacing-md);
     }
 
     .bookings-list {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+    }
+    
+    .booking-card {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .profile-section h2 {
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-md);
     }
   }
 

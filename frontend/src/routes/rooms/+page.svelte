@@ -504,10 +504,10 @@
   .error-icon, .no-rooms-icon {
     color: var(--text-light);
   }
-
   @media (max-width: 768px) {
     .room-grid {
       grid-template-columns: 1fr;
+      gap: var(--spacing-md);
     }
 
     .rooms-container {
@@ -515,11 +515,44 @@
     }
 
     h1 {
-      font-size: var(--font-size-3xl);
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .subtitle {
+      font-size: var(--font-size-base);
+      margin-bottom: var(--spacing-lg);
     }
 
     .filter-section {
       padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+      gap: var(--spacing-md);
+    }
+    
+    .filter-section label {
+      font-size: var(--font-size-sm);
+    }
+    
+    .hotel-filter, .amenities-filter {
+      gap: var(--spacing-xs);
+    }
+    
+    .amenities-list {
+      gap: var(--spacing-xs);
+    }
+    
+    .amenity-pill {
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .room-card {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .room-header h3 {
+      font-size: var(--font-size-base);
     }
   }
 </style>
