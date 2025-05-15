@@ -36,5 +36,30 @@
     3. Make sure to have MySQL server running and the database created before starting the backend server.
 
 ## Screenshots
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-</div>
+
+<table>
+  <tr>
+    <td><img src="ss/landing.png" alt="Landing Page" width="350"/></td>
+    <td><img src="ss/profile.png" alt="User Profile" width="350"/></td>
+  </tr>
+  <tr>
+    <td><img src="ss/hotels.png" alt="Hotels List" width="350"/></td>
+    <td><img src="ss/hotel-rooms.png" alt="Hotel Rooms" width="350"/></td>
+  </tr>
+  <tr>
+    <td><img src="ss/rooms.png" alt="Rooms List" width="350"/></td>
+    <td><img src="ss/payment.png" alt="Payment Page" width="350"/></td>
+  </tr>
+  <tr>
+    <td><img src="ss/adm_users.png" alt="Admin Users" width="350"/></td>
+    <td><img src="ss/adm_dash.png" alt="Admin Dashboard" width="350"/></td>
+  </tr>
+  <tr>
+    <td><img src="ss/adm_bookings.png" alt="Admin Bookings" width="350"/></td>
+    <td><img src="ss/adm_rooms.png" alt="Admin Rooms" width="350"/></td>
+  </tr>
+  <tr>
+    <td><img src="ss/lonin.png" alt="Login Page" width="350"/></td>
+    <td><img src="ss/register.png" alt="Register Page" width="350"/></td>
+  </tr>
+</table>
