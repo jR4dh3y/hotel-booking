@@ -37,8 +37,4 @@
 
 ## Screenshots
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
-    <img src="ss/mp.png" alt="Main Page" width="100%">
-    <img src="ss/hotelrooms.png" alt="Hotel Rooms" width="100%">
-    <img src="ss/rooms.png" alt="Rooms" width="100%">
-    <img src="ss/login.png" alt="Login Page" width="100%">
 </div>

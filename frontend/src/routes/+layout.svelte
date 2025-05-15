@@ -60,7 +60,7 @@
           </div>
           <div class="footer-section">
             <h4>Contact</h4>
-            <p>Email: info@hotelbooking.com</p>
+            <p>Email: abc@xyz.com</p>
             <p>Phone: +1234567890</p>
           </div>
         </div>
@@ -122,7 +122,7 @@
           </div>
           <div class="footer-section">
             <h4>Contact</h4>
-            <p>Email: info@hotelbooking.com</p>
+            <p>Email: abc@xyz.com</p>
             <p>Phone: +1234567890</p>
           </div>
         </div>

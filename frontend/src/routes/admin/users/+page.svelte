@@ -221,7 +221,6 @@
     </div>
   </div>
   
-  <!-- User Form Modal -->
   {#if formMode}
     <div class="modal-overlay">
       <div class="modal-content">
@@ -239,49 +238,62 @@
         {/if}
         
         <form on:submit|preventDefault={handleSubmit}>
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input 
-              type="text" 
-              id="name"
-              bind:value={currentUser.name}
-              required
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input 
-              type="email" 
-              id="email"
-              bind:value={currentUser.email}
-              required
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="password">
-              {formMode === 'add' ? 'Password' : 'Password (leave blank to keep current)'}
-            </label>
-            <input 
-              type="password" 
-              id="password"
-              bind:value={currentUser.password}
-              required={formMode === 'add'}
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="role">Role</label>
-            <select 
-              id="role"
-              bind:value={currentUser.role}
-              required
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <td><label for="name">Name</label></td>
+                <td>
+                  <input 
+                    type="text" 
+                    id="name"
+                    bind:value={currentUser.name}
+                    required
+                  />
+                </td>
+              </tr>
+              
+              <tr>
+                <td><label for="email">Email</label></td>
+                <td>
+                  <input 
+                    type="email" 
+                    id="email"
+                    bind:value={currentUser.email}
+                    required
+                  />
+                </td>
+              </tr>
+              
+              <tr>
+                <td>
+                  <label for="password">
+                    {formMode === 'add' ? 'Password' : 'Password (leave blank to keep current)'}
+                  </label>
+                </td>
+                <td>
+                  <input 
+                    type="password" 
+                    id="password"
+                    bind:value={currentUser.password}
+                    required={formMode === 'add'}
+                  />
+                </td>
+              </tr>
+              
+              <tr>
+                <td><label for="role">Role</label></td>
+                <td>
+                  <select 
+                    id="role"
+                    bind:value={currentUser.role}
+                    required>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           
           <div class="form-actions">
             <button type="button" class="cancel-button" on:click={cancelForm}>Cancel</button>
@@ -293,61 +305,63 @@
       </div>
     </div>
   {/if}
-  
   <!-- Users List -->
-  {#if loading}
-    <div class="loading">Loading user data...</div>
-  {:else if error}
-    <div class="error">
-      <p>{error}</p>
-      <button class="retry-button" on:click={loadUsers}>Retry</button>
-    </div>
-  {:else if filteredUsers().length === 0}
-    <div class="no-data">
-      {#if searchQuery || filterRole !== 'all'}
-        No users matching the current filters.
-      {:else}
-        No users found in the system.
-      {/if}
-    </div>
-  {:else}
-    <div class="results-header">
-      <h3>Showing {filteredUsers().length} of {users.length} users</h3>
-    </div>
-    
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each filteredUsers() as user}
+    <!-- Users List -->
+    {#if loading}
+      <div class="loading">Loading user data...</div>
+    {:else if error}
+      <div class="error">
+        <p>{error}</p>
+        <button class="retry-button" on:click={loadUsers}>Retry</button>
+      </div>
+    {:else if filteredUsers().length === 0}
+      <div class="no-data">
+        {#if searchQuery || filterRole !== 'all'}
+          No users matching the current filters.
+        {:else}
+          No users found in the system.
+        {/if}
+      </div>
+    {:else}
+      <div class="results-header">
+        <h3>Showing {filteredUsers().length} of {users.length} users</h3>
+      </div>
+      
+      <div class="table-container">
+        <table class="users-table">
+          <thead>
             <tr>
-              <td class="user-id">#{user.user_id.toString().padStart(6, '0')}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td><span class="role-badge {user.role}">{user.role}</span></td>
-              <td class="actions-cell">
-                <button class="action-button edit" on:click={() => showEditForm(user)}>
-                  ✏️
-                </button>
-                <button class="action-button delete" on:click={() => handleDeleteUser(user.user_id)}>
-                  🗑️
-                </button>
-              </td>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Actions</th>
             </tr>
-          {/each}
-        </tbody>
-      </table>
-    </div>
-  {/if}
-</div>
+          </thead>
+          <tbody>
+            {#each filteredUsers() as user}
+              <tr>
+                <td class="user-id">#{user.user_id.toString().padStart(6, '0')}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td><span class="role-badge role-{user.role}">{user.role}</span></td>
+                <td class="actions-cell">
+                  <div class="action-buttons">
+                    <button class="edit-btn" on:click={() => showEditForm(user)}>
+                      ✏️
+                    </button>
+                    <button class="delete-btn" on:click={() => handleDeleteUser(user.user_id)}>
+                      🗑️
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+    {/if}
+  </div>
 
 <style>
   .admin-users {
@@ -503,12 +517,12 @@
   }
   
   .edit-btn {
-    background: linear-gradient(45deg, var(--warning), var(--warning-dark));
+    background: linear-gradient(45deg, var(--warning), var(--text-white));
     color: var(--background);
   }
   
   .delete-btn {
-    background: linear-gradient(45deg, var(--error), var(--error-dark));
+    background: linear-gradient(45deg, var(--error), var(--text-light));
     color: var(--background);
   }
   
@@ -516,18 +530,6 @@
   .delete-btn:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
-  }
-  
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 1000;
   }
   
@@ -552,9 +554,7 @@
     color: var(--text-white);
     font-size: var(--font-size-xl);
     font-weight: 600;
-  }
-  
-  .close-btn {
+  .close-button {
     background: none;
     border: none;
     color: var(--text-light);
@@ -563,23 +563,32 @@
     transition: all var(--transition-fast);
   }
   
-  .close-btn:hover {
+  .close-button:hover {
     color: var(--text-white);
   }
-  
-  .form-group {
+    color: var(--text-white);
+  .form-table {
+    width: 100%;
     margin-bottom: var(--spacing-lg);
   }
   
-  .form-group label {
+  .form-table td {
+    padding: var(--spacing-sm);
+    vertical-align: middle;
+  }
+  
+  .form-table td:first-child {
+    width: 40%;
+  }
+  
+  .form-table label {
     display: block;
-    margin-bottom: var(--spacing-sm);
     color: var(--text-light);
     font-weight: 500;
   }
   
-  .form-group input,
-  .form-group select {
+  .form-table input,
+  .form-table select {
     width: 100%;
     padding: var(--spacing-md);
     border: 2px solid var(--border-color);
@@ -588,16 +597,40 @@
     color: var(--text-white);
     font-size: var(--font-size-base);
     transition: all var(--transition-fast);
+  .submit-button {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: var(--background);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
   }
   
-  .form-group input:focus,
-  .form-group select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(137, 180, 250, 0.15);
+  .submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+    padding: var(--spacing-md);
+  .form-error {
+    background-color: rgba(243, 139, 168, 0.1);
+    color: var(--error);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--error);
   }
   
-  .submit-btn {
+  .form-success {
+    background-color: rgba(166, 227, 161, 0.1);
+    color: var(--success);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--success);
+  }
     width: 100%;
     padding: var(--spacing-md);
     background: linear-gradient(45deg, var(--primary), var(--primary-dark));
@@ -673,46 +706,6 @@
     cursor: pointer;
   }
     @media (max-width: 768px) {
-    .admin-users {
-      padding: var(--spacing-md);
-    }
-    
-    .filters-section {
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .filters-grid {
-      grid-template-columns: 1fr;
-      gap: var(--spacing-md);
-    }
-    
-    .users-table {
-      display: block;
-      overflow-x: auto;
-      font-size: var(--font-size-sm);
-    }
-    
-    .users-table th,
-    .users-table td {
-      padding: var(--spacing-sm);
-    }
-    
-    .action-buttons {
-      flex-direction: column;
-      gap: var(--spacing-xs);
-    }
-    
-    .modal-content {
-      margin: var(--spacing-sm);
-      padding: var(--spacing-md);
-      width: calc(100% - var(--spacing-md) * 2);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    
-    .filters-header h3 {
-      font-size: var(--font-size-lg);
-    }
   }
+}
 </style>

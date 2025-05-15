@@ -502,8 +502,8 @@
   }
   
   .action-button.delete {
-    background: linear-gradient(45deg, var(--error), var(--error-dark));
-    color: var(--background);
+    background: var(--error);
+    color: var(--error-dark);
   }
   
   .action-button:hover {
